@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Loader2, Send } from "lucide-react";
+import { CheckCircle2, Loader2, Send, User, Phone, GraduationCap, MapPin, Sparkles, ShieldCheck } from "lucide-react";
+import { motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { API_URL } from "@/lib/fetcher";
+import { cn } from "@/lib/utils";
 
 type FormValues = {
   studentName: string;
@@ -67,6 +69,20 @@ function validate(values: FormValues): FormErrors {
   return errors;
 }
 
+function SectionBadge({ number, title, icon: Icon }: { number: string; title: string; icon: React.ComponentType<{ className?: string }> }) {
+  return (
+    <div className="flex items-center gap-2.5 pb-2 mb-4 border-b border-navy-100/70">
+      <span className="flex size-6 items-center justify-center rounded-full bg-ember/15 text-ember-700 text-xs font-black">
+        {number}
+      </span>
+      <Icon className="size-4 text-navy-600" />
+      <h4 className="text-xs font-black uppercase tracking-wider text-navy-800">
+        {title}
+      </h4>
+    </div>
+  );
+}
+
 function Field({
   id,
   label,
@@ -82,20 +98,22 @@ function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id}>
-        {label}
-        <span aria-hidden="true" className="ml-0.5 text-ember-600">
-          *
+      <Label htmlFor={id} className="text-xs font-bold text-navy-800 flex items-center justify-between">
+        <span>
+          {label}
+          <span aria-hidden="true" className="ml-0.5 text-ember-600 font-black">
+            *
+          </span>
         </span>
       </Label>
       {children}
       {hint && !error && (
-        <p id={`${id}-hint`} className="text-xs text-muted-foreground">
+        <p id={`${id}-hint`} className="text-[11px] text-muted-foreground">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-destructive">
+        <p id={`${id}-error`} role="alert" className="text-xs font-semibold text-destructive animate-in fade-in slide-in-from-top-1">
           {error}
         </p>
       )}
@@ -111,7 +129,6 @@ export function ApplicationForm() {
 
   const set = (key: keyof FormValues) => (value: string | null) => {
     setValues((prev) => ({ ...prev, [key]: value ?? "" }));
-    // Clear the field error as soon as the user starts correcting it.
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
   };
 
@@ -122,7 +139,6 @@ export function ApplicationForm() {
     if (Object.keys(found).length > 0) {
       setErrors(found);
       setStatus("idle");
-      // Move focus to the first invalid field for keyboard/screen-reader users.
       const firstKey = Object.keys(found)[0];
       document.getElementById(firstKey)?.focus();
       return;
@@ -144,7 +160,6 @@ export function ApplicationForm() {
       const payload = await res.json().catch(() => null);
 
       if (!res.ok) {
-        // Map server field errors onto the form where we can.
         if (payload?.errors) {
           const mapped: FormErrors = {};
           for (const item of payload.errors as { field: string; message: string }[]) {
@@ -169,19 +184,32 @@ export function ApplicationForm() {
 
   if (status === "success") {
     return (
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         role="status"
-        className="flex flex-col items-center rounded-3xl border border-emerald-200 bg-emerald-50 p-10 text-center"
+        className="relative overflow-hidden flex flex-col items-center rounded-3xl border border-emerald-200/80 bg-white p-10 sm:p-12 text-center shadow-xl"
       >
-        <CheckCircle2 className="size-14 text-emerald-600" aria-hidden="true" />
-        <h3 className="mt-4 text-xl font-extrabold text-navy">Application received</h3>
-        <p className="mt-2 max-w-sm text-sm text-navy-700/80">
-          Thank you. Our regional admission counsellor will call you within one working day.
+        <div className="pointer-events-none absolute -top-16 size-44 rounded-full bg-emerald-100 blur-2xl opacity-70" />
+        <span className="flex size-20 items-center justify-center rounded-full bg-emerald-500 text-white shadow-lg shadow-emerald-500/30">
+          <CheckCircle2 className="size-10" aria-hidden="true" />
+        </span>
+        <h3 className="mt-6 text-2xl font-black tracking-tight text-navy">
+          Application Received Successfully!
+        </h3>
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-navy-600">
+          Thank you for applying. Your dedicated regional admission counsellor will review your details and reach out within <strong>one working day</strong> to help with eligibility & seat confirmation.
         </p>
-        <Button variant="outline" className="mt-6" onClick={() => setStatus("idle")}>
-          Submit another application
-        </Button>
-      </div>
+        <div className="mt-8 flex items-center gap-3">
+          <Button
+            variant="outline"
+            className="rounded-full border-navy-200 px-6 py-2.5 font-bold text-navy hover:bg-navy-50"
+            onClick={() => setStatus("idle")}
+          >
+            Submit Another Application
+          </Button>
+        </div>
+      </motion.div>
     );
   }
 
@@ -195,150 +223,201 @@ export function ApplicationForm() {
   });
 
   return (
-    <form onSubmit={onSubmit} noValidate className="rounded-3xl border border-navy-100 bg-white p-6 shadow-xl sm:p-10">
-      <div className="flex items-start gap-3">
-        <Send className="mt-1 size-5 shrink-0 text-ember" aria-hidden="true" />
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      className="relative flex flex-col justify-between h-full overflow-hidden rounded-3xl border border-navy-100/90 bg-white p-6 sm:p-8 shadow-xl shadow-navy-900/5 transition-all"
+    >
+      {/* Decorative subtle ambient top gradient bar */}
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-ember-gradient" />
+
+      {/* Header section */}
+      <div className="flex items-start justify-between gap-3 pb-4 border-b border-navy-100/70">
         <div>
-          <h3 className="text-xl font-extrabold text-navy">Admission enquiry — 2026</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Takes about two minutes. Our counsellor will call you back.
+          <div className="flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1 rounded-full bg-ember-50 border border-ember-200/60 px-2 py-0.5 text-[10px] font-black text-ember-700 uppercase tracking-wide">
+              <Sparkles className="size-2.5 text-ember" />
+              Direct Admission 2026
+            </span>
+          </div>
+          <h3 className="mt-1.5 text-xl font-black tracking-tight text-navy sm:text-2xl">
+            Admission Enquiry Form
+          </h3>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Complete the short form to connect directly with your regional counsellor.
           </p>
+        </div>
+        <div className="hidden sm:flex size-10 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-navy-800 border border-navy-100">
+          <ShieldCheck className="size-5 text-ember" />
         </div>
       </div>
 
       {status === "error" && (
-        <p
+        <div
           role="alert"
-          className="mt-5 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-medium text-destructive"
+          className="mt-4 rounded-xl border border-destructive/30 bg-destructive/5 px-3.5 py-2.5 text-xs font-semibold text-destructive animate-in fade-in"
         >
           {serverMessage}
-        </p>
+        </div>
       )}
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2">
-        <Field id="studentName" label="Student name" error={errors.studentName}>
-          <Input
-            {...fieldProps("studentName")}
-            onChange={(e) => set("studentName")(e.target.value)}
-            placeholder="e.g. Anitha Sharma"
-            autoComplete="name"
-          />
-        </Field>
+      <div className="mt-5 space-y-4 flex-1">
+        {/* Step 1: Student Information */}
+        <div>
+          <SectionBadge number="1" title="Student Details" icon={User} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field id="studentName" label="Student Full Name" error={errors.studentName}>
+              <Input
+                {...fieldProps("studentName")}
+                onChange={(e) => set("studentName")(e.target.value)}
+                placeholder="e.g. Anitha Sharma"
+                autoComplete="name"
+                className="h-9.5 rounded-xl bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+              />
+            </Field>
 
-        <Field id="studentMobile" label="Student mobile" error={errors.studentMobile}>
-          <Input
-            {...fieldProps("studentMobile")}
-            onChange={(e) => set("studentMobile")(e.target.value.replace(/\D/g, "").slice(0, 10))}
-            placeholder="10-digit number"
-            inputMode="numeric"
-            autoComplete="tel"
-          />
-        </Field>
+            <Field id="studentMobile" label="Student Mobile Number" error={errors.studentMobile}>
+              <Input
+                {...fieldProps("studentMobile")}
+                onChange={(e) => set("studentMobile")(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                placeholder="10-digit mobile number"
+                inputMode="numeric"
+                autoComplete="tel"
+                className="h-9.5 rounded-xl bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+              />
+            </Field>
 
-        <Field id="gender" label="Gender" error={errors.gender}>
-          <Select value={values.gender} onValueChange={set("gender")}>
-            <SelectTrigger
-              id="gender"
-              aria-invalid={errors.gender ? true : undefined}
-              aria-describedby={errors.gender ? "gender-error" : undefined}
-              className="w-full"
-            >
-              <SelectValue placeholder="Select gender" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="male">Male</SelectItem>
-              <SelectItem value="female">Female</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
-            </SelectContent>
-          </Select>
-        </Field>
+            <div className="sm:col-span-2">
+              <Field id="gender" label="Gender" error={errors.gender}>
+                <Select value={values.gender} onValueChange={set("gender")}>
+                  <SelectTrigger
+                    id="gender"
+                    aria-invalid={errors.gender ? true : undefined}
+                    aria-describedby={errors.gender ? "gender-error" : undefined}
+                    className="w-full h-9.5 rounded-xl bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+                  >
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </div>
+          </div>
+        </div>
 
-        <Field id="fatherName" label="Father / guardian name" error={errors.fatherName}>
-          <Input
-            {...fieldProps("fatherName")}
-            onChange={(e) => set("fatherName")(e.target.value)}
-            placeholder="e.g. Ramesh Sharma"
-          />
-        </Field>
+        {/* Step 2: Parent / Guardian Details */}
+        <div>
+          <SectionBadge number="2" title="Parent / Guardian Details" icon={Phone} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field id="fatherName" label="Father / Guardian Name" error={errors.fatherName}>
+              <Input
+                {...fieldProps("fatherName")}
+                onChange={(e) => set("fatherName")(e.target.value)}
+                placeholder="e.g. Ramesh Sharma"
+                className="h-9.5 rounded-xl bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+              />
+            </Field>
 
-        <Field id="fatherMobile" label="Father / guardian mobile" error={errors.fatherMobile}>
-          <Input
-            {...fieldProps("fatherMobile")}
-            onChange={(e) => set("fatherMobile")(e.target.value.replace(/\D/g, "").slice(0, 10))}
-            placeholder="10-digit number"
-            inputMode="numeric"
-            autoComplete="tel"
-          />
-        </Field>
+            <Field id="fatherMobile" label="Father / Guardian Mobile" error={errors.fatherMobile}>
+              <Input
+                {...fieldProps("fatherMobile")}
+                onChange={(e) => set("fatherMobile")(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                placeholder="10-digit mobile number"
+                inputMode="numeric"
+                autoComplete="tel"
+                className="h-9.5 rounded-xl bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+              />
+            </Field>
+          </div>
+        </div>
 
-        <Field id="interCollegeName" label="Inter college name" error={errors.interCollegeName}>
-          <Input
-            {...fieldProps("interCollegeName")}
-            onChange={(e) => set("interCollegeName")(e.target.value)}
-            placeholder="e.g. Sri Chaitanya Junior College"
-          />
-        </Field>
+        {/* Step 3: Academic & Location */}
+        <div>
+          <SectionBadge number="3" title="Academic Background & Address" icon={GraduationCap} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field id="interCollegeName" label="Inter College / School Name" error={errors.interCollegeName}>
+              <Input
+                {...fieldProps("interCollegeName")}
+                onChange={(e) => set("interCollegeName")(e.target.value)}
+                placeholder="e.g. Sri Chaitanya Junior College"
+                className="h-9.5 rounded-xl bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+              />
+            </Field>
 
-        <Field id="interCollegePlace" label="Inter college place" error={errors.interCollegePlace}>
-          <Input
-            {...fieldProps("interCollegePlace")}
-            onChange={(e) => set("interCollegePlace")(e.target.value)}
-            placeholder="e.g. Kurnool"
-          />
-        </Field>
+            <Field id="interCollegePlace" label="College Town / City" error={errors.interCollegePlace}>
+              <Input
+                {...fieldProps("interCollegePlace")}
+                onChange={(e) => set("interCollegePlace")(e.target.value)}
+                placeholder="e.g. Kurnool"
+                className="h-9.5 rounded-xl bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+              />
+            </Field>
 
-        <Field
-          id="appNumber"
-          label="Application number"
-          error={errors.appNumber}
-          hint="Your KCET, JEE Main or CET allotment number"
-        >
-          <Input
-            {...fieldProps("appNumber")}
-            onChange={(e) => set("appNumber")(e.target.value)}
-            placeholder="e.g. 2026012345"
-            className="uppercase"
-          />
-        </Field>
+            <div className="sm:col-span-2">
+              <Field
+                id="appNumber"
+                label="Entrance Exam / Allotment App No."
+                error={errors.appNumber}
+                hint="KCET, JEE Main, COMEDK, or CET hall ticket / application number"
+              >
+                <Input
+                  {...fieldProps("appNumber")}
+                  onChange={(e) => set("appNumber")(e.target.value)}
+                  placeholder="e.g. 2026012345"
+                  className="h-9.5 rounded-xl uppercase font-mono tracking-wider bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+                />
+              </Field>
+            </div>
 
-        <div className="sm:col-span-2">
-          <Field
-            id="homeTownAddress"
-            label="Home town address"
-            error={errors.homeTownAddress}
-          >
-            <Textarea
-              {...fieldProps("homeTownAddress")}
-              onChange={(e) => set("homeTownAddress")(e.target.value)}
-              placeholder="House / street, area, town, district, state, PIN"
-              rows={3}
-            />
-          </Field>
+            <div className="sm:col-span-2">
+              <Field
+                id="homeTownAddress"
+                label="Home Town Address"
+                error={errors.homeTownAddress}
+              >
+                <Textarea
+                  {...fieldProps("homeTownAddress")}
+                  onChange={(e) => set("homeTownAddress")(e.target.value)}
+                  placeholder="Door No., Street, Area, City/Town, District, State & PIN code"
+                  rows={2}
+                  className="rounded-xl bg-navy-50/40 border-navy-200/70 text-xs focus:bg-white focus:border-ember transition-colors"
+                />
+              </Field>
+            </div>
+          </div>
         </div>
       </div>
 
-      <Button
-        type="submit"
-        size="lg"
-        disabled={status === "submitting"}
-        className="mt-8 h-12 w-full bg-ember-gradient text-base text-white hover:opacity-90"
-      >
-        {status === "submitting" ? (
-          <>
-            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-            Submitting…
-          </>
-        ) : (
-          <>
-            <Send className="size-4" aria-hidden="true" />
-            Submit application
-          </>
-        )}
-      </Button>
+      <div className="mt-5 pt-3">
+        <Button
+          type="submit"
+          size="lg"
+          disabled={status === "submitting"}
+          className="h-11.5 w-full rounded-xl bg-ember-gradient text-sm font-black text-white shadow-lg shadow-ember/20 transition-all hover:opacity-95 hover:shadow-xl hover:shadow-ember/30 active:scale-[0.99] cursor-pointer"
+        >
+          {status === "submitting" ? (
+            <>
+              <Loader2 className="size-4 animate-spin mr-2" aria-hidden="true" />
+              Submitting Application…
+            </>
+          ) : (
+            <>
+              <Send className="size-4 mr-2" aria-hidden="true" />
+              Submit Admission Enquiry
+            </>
+          )}
+        </Button>
 
-      <p className="mt-4 text-center text-xs text-muted-foreground">
-        By submitting you agree to be contacted by the Nagarjuna Group admissions team.
-      </p>
+        <div className="mt-2.5 flex items-center justify-center gap-1 text-center text-[10px] text-muted-foreground">
+          <ShieldCheck className="size-3 text-emerald-600" />
+          <span>Your contact details are encrypted and handled confidentially.</span>
+        </div>
+      </div>
     </form>
   );
 }
+

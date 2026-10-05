@@ -15,25 +15,35 @@ export function Hero() {
       <AuroraBackdrop />
 
       <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <Badge className="mb-6 gap-2 border-ember/40 bg-ember/15 text-ember-200 hover:bg-ember/20">
-            <Sparkles className="size-3.5" aria-hidden="true" />
+        <div className="max-w-4xl lg:max-w-5xl">
+          <Badge className="mb-6 inline-flex items-center gap-2 border-ember/40 bg-ember/15 text-ember-200 hover:bg-ember/20 px-3.5 py-1 text-xs font-bold rounded-full">
+            <Sparkles className="size-3.5 text-ember" aria-hidden="true" />
             Admissions {site.tagline} are open
           </Badge>
 
-          <h1 className="text-4xl font-black tracking-tight text-balance text-white sm:text-5xl lg:text-6xl">
-            <TextReveal
-              as="span"
-              text="Admissions to the Nagarjuna Group of Institutions"
-              className="block"
-              delayMs={45}
-            />
+          <h1 className="text-3xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.12]">
+            <span className="block whitespace-normal sm:whitespace-nowrap">
+              <TextReveal
+                as="span"
+                text="Admissions to the Nagarjuna"
+                className="inline"
+                delayMs={40}
+              />
+            </span>
+            <span className="block">
+              <TextReveal
+                as="span"
+                text="Group of Institutions"
+                className="inline"
+                delayMs={40}
+              />
+            </span>
           </h1>
 
           <TextReveal
             text="NAAC A+ accredited, autonomous and consistently placed — one application, every campus, and a regional counsellor who calls you back."
-            className="mt-6 max-w-2xl text-base leading-relaxed text-navy-100 sm:text-lg"
-            delayMs={25}
+            className="mt-6 max-w-2xl text-base leading-relaxed text-navy-100/90 sm:text-lg block"
+            delayMs={20}
           />
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">

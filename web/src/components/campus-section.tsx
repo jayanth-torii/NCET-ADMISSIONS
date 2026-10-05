@@ -15,6 +15,7 @@ export function CampusSection() {
           eyebrow="Learning ecosystem"
           title="Where teaching, study and hands-on work take place."
           description="A single 60-acre campus in Devanahalli carrying the library, laboratories, innovation spaces and student welfare that a full engineering programme needs."
+          className="[&_p]:text-justify sm:[&_p]:text-left"
         />
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
@@ -31,7 +32,7 @@ export function CampusSection() {
                   </span>
                   <div>
                     <h3 className="text-base font-extrabold text-navy">{item.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground text-justify sm:text-left">
                       {item.detail}
                     </p>
                   </div>

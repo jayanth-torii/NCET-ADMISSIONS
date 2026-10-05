@@ -11,10 +11,9 @@ import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "#institutions", label: "Institutions" },
+  { href: "#counsellor", label: "Counsellor" },
   { href: "#programmes", label: "Programmes" },
   { href: "#process", label: "Process" },
-  { href: "#counsellor", label: "Counsellor" },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -37,18 +36,24 @@ export function SiteHeader() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  // Over the hero the header sits on a dark navy surface, so its own colours
+  // have to invert; once scrolled it sits on a light blurred bar.
+  const onDark = !scrolled;
+
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        "fixed inset-x-0 top-0 z-50 border-b transition-all duration-300",
         scrolled
-          ? "border-b border-navy-100 bg-white/85 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
+          ? "border-navy-100 bg-white/85 shadow-sm backdrop-blur-xl"
+          : "border-white/10 bg-navy/40 backdrop-blur-sm"
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="#top" className="flex items-center gap-2.5">
-          <NgiLogo />
+          {/* The mark ships with an opaque white background, so only the
+              wordmark needs to flip between the dark hero and the light bar. */}
+          <NgiLogo invert={onDark} priority />
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
@@ -56,7 +61,12 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-navy-700 transition-colors hover:bg-navy-50 hover:text-navy"
+              className={cn(
+                "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                onDark
+                  ? "text-white/85 hover:bg-white/10 hover:text-white"
+                  : "text-navy-700 hover:bg-navy-50 hover:text-navy"
+              )}
             >
               {item.label}
             </Link>
@@ -69,7 +79,10 @@ export function SiteHeader() {
             external
             variant="ghost"
             size="sm"
-            className="hidden text-navy lg:inline-flex"
+            className={cn(
+              "hidden lg:inline-flex",
+              onDark ? "text-white hover:bg-white/10 hover:text-white" : "text-navy"
+            )}
           >
             <Phone className="size-4" aria-hidden="true" />
             {site.helpline}
@@ -89,7 +102,7 @@ export function SiteHeader() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className={cn("md:hidden", onDark && "text-white hover:bg-white/10")}
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -123,4 +136,4 @@ export function SiteHeader() {
       )}
     </header>
   );
-}
+}

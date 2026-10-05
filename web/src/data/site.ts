@@ -42,8 +42,8 @@ export type Institution = {
 export const institutions: Institution[] = [
   {
     slug: "ncet",
-    name: "Nagarjuna College of Engineering & Technology",
-    shortName: "NCET",
+    name: "Nagarjuna College Of Engineering & Technology",
+    shortName: "Nagarjuna College Of Engineering & Technology",
     location: "Devanahalli, Bengaluru",
     about:
       "The group's flagship engineering and technology institution — autonomous under VTU until 2031–32, NAAC A+ (Cycle II), with NBA accreditation for CSE and ECE.",
@@ -65,7 +65,7 @@ export const institutions: Institution[] = [
   {
     slug: "nagarjuna-degree-college",
     name: "Nagarjuna Degree College",
-    shortName: "NDC",
+    shortName: "Nagarjuna Degree College",
     location: "Yelahanka, Bengaluru",
     about:
       "A long-standing undergraduate college offering science, commerce and arts degrees with a focus on accessible, career-oriented higher education.",
@@ -75,24 +75,28 @@ export const institutions: Institution[] = [
   {
     slug: "ngi",
     name: "Nagarjuna Group of Institutions",
-    shortName: "NGI",
+    shortName: "nagarjuna group of institutions",
     about:
       "The apex body uniting all six Nagarjuna institutions, governed by the Nagarjuna Education Society, Yelahanka, Bengaluru.",
+    website: "https://nagarjunaeducation.com/gallery.html",
   },
   {
     slug: "novus-vidyaniketan",
-    name: "Nagarjuna Novus Vidyaniketan",
-    shortName: "Novus",
+    name: "Novus Early Learning Center",
+    shortName: "Novus Early Learning Center",
+    website: "https://novuselc.com/",
   },
   {
     slug: "nagarjuna-cms",
     name: "Nagarjuna College of Management Studies",
-    shortName: "NCMS",
+    shortName: "Nagarjuna College of Management Studies",
+    website: "https://ncms.co.in/",
   },
   {
     slug: "nagarjuna-pre-university",
-    name: "Nagarjuna Pre-University College",
-    shortName: "Pre-University",
+    name: "Nagarjuna Pre University College",
+    shortName: "Nagarjuna Pre University College",
+    website: "https://nagarjunapucollege.co.in/",
   },
 ];
 
@@ -200,12 +204,21 @@ export const programs: Program[] = [
     institution: "NCET",
   },
   {
-    code: "MBA / MCA",
-    name: "Postgraduate Management & Computer Applications",
+    code: "MBA",
+    name: "Master of Business Administration",
     duration: "2 Years",
     level: "PG",
-    tags: ["Management", "Specialisation", "Industry Projects"],
-    careers: "Business Analyst · Tech Lead · Enterprise Architect",
+    tags: ["Finance", "Marketing", "HR & Analytics", "Leadership"],
+    careers: "Business Consultant · Product Manager · Marketing Lead",
+    institution: "NCET",
+  },
+  {
+    code: "MCA",
+    name: "Master of Computer Applications",
+    duration: "2 Years",
+    level: "PG",
+    tags: ["Cloud Computing", "Software Architecture", "Full-Stack Dev"],
+    careers: "Software Architect · Solutions Engineer · Tech Lead",
     institution: "NCET",
   },
 ];
