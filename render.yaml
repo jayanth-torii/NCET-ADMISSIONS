@@ -1,0 +1,77 @@
+# Render blueprint for the NGI Admissions stack.
+#
+# Deploy with:  New + Blueprint  ->  select this repo  ->  Apply
+#
+# Two services, because they scale and fail independently:
+#   - ngi-admissions-web : Next.js (App Router), static export + Node server
+#   - ngi-admissions-api  : Express + Mongoose
+#
+# Set the secret values once in the Render dashboard (or via `render env`),
+# then every redeploy picks them up:
+#   MONGODB_URI, API_CORS_ORIGIN, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS,
+#   SMTP_FROM, DIGEST_TRANSPORT, DASHBOARD_URL
+
+services:
+  # ------------------------------------------------------------------ web
+  - type: web
+    name: ngi-admissions-web
+    runtime: node
+    rootDir: web
+    plan: free
+    buildCommand: npm ci --no-audit --no-fund && npm run build
+    startCommand: >-
+      cp -r public .next/standalone/ 2>/dev/null || true;
+      cp -r .next/static .next/standalone/.next/ 2>/dev/null || true;
+      node .next/standalone/server.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NEXT_PUBLIC_API_URL
+        # Replace with the API's public URL once it is live.
+        sync: false
+      - key: PORT
+        generateValue: true
+
+  # ------------------------------------------------------------------ api
+  - type: web
+    name: ngi-admissions-api
+    runtime: node
+    rootDir: api
+    plan: free
+    buildCommand: npm ci --no-audit --no-fund
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: PORT
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      # Weekly digest — SMTP is the transport that can attach the workbook.
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_SECURE
+        value: "false"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: DIGEST_TRANSPORT
+        value: auto
+      - key: DASHBOARD_URL
+        sync: false
+      # EmailJS fallback (cannot attach files).
+      - key: EMAILJS_SERVICE_ID
+        sync: false
+      - key: EMAILJS_TEMPLATE_ID
+        sync: false
+      - key: EMAILJS_PUBLIC_KEY
+        sync: false

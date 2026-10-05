@@ -113,6 +113,10 @@ cd NCET-ADMISSIONS
 npm run install:all          # root + api + web dependencies
 ```
 
+> A plain `npm install` at the root also installs both workspaces — a `postinstall`
+> hook runs the per-workspace installs, so CI platforms that only call
+> `npm install && npm run build` work without extra configuration.
+
 ### 1 · API
 
 ```bash
@@ -356,6 +360,43 @@ counsellor record lives in the database via `api/src/seed.js`, with a mirrored
 fallback in `fallbackCounselor` used only if the API is unreachable.
 
 Brand tokens live at the top of `web/src/app/globals.css`.
+
+---
+
+## ☁️ Deploying to Render
+
+The repo ships a [`render.yaml`](./render.yaml) blueprint that deploys both
+services:
+
+| Service | Root dir | Build | Start |
+|---|---|---|---|
+| `ngi-admissions-web` | `web` | `npm ci && npm run build` | `node .next/standalone/server.js` |
+| `ngi-admissions-api` | `api` | `npm ci` | `npm start` |
+
+**In the Render dashboard:** *New → Blueprint* → select this repo → *Apply*, then
+fill in every `sync: false` variable it lists.
+
+| Variable | Service | Value |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | web | `https://<api>.onrender.com` |
+| `MONGODB_URI` | api | your Atlas URI |
+| `CORS_ORIGIN` | api | `https://<web>.onrender.com` |
+| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` / `SMTP_FROM` | api | mail provider credentials |
+| `DIGEST_TRANSPORT` | api | `auto` |
+| `DASHBOARD_URL` | api | `https://<web>.onrender.com/` |
+
+> ⚠️ **After the first deploy, redeploy the web service.** `NEXT_PUBLIC_API_URL` is
+> inlined at build time, so the API URL must be baked into the bundle.
+
+<details>
+<summary><b>Deploying the web app only</b></summary>
+
+If you host the API elsewhere, set **Root Directory** to `web`, and either set a
+build command of `npm ci && npm run build` or leave Render's default — the
+`web/` folder is self-contained. Running the build from the repo root also works,
+because the root `build` script installs each workspace before building.
+
+</details>
 
 ---
 
