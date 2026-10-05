@@ -38,7 +38,7 @@ export function ProgrammesSection() {
   }, [visiblePrograms]);
 
   return (
-    <section id="programmes" className="relative overflow-hidden bg-navy-50/60 py-20 sm:py-28">
+    <section id="programmes" className="relative overflow-hidden bg-navy-50/60 py-24 sm:py-32">
       {/* Decorative subtle ambient glows */}
       <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 size-96 rounded-full bg-ember/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 right-10 size-96 rounded-full bg-navy/5 blur-3xl" />
@@ -195,4 +195,4 @@ export function ProgrammesSection() {
     </section>
   );
 }
-
+

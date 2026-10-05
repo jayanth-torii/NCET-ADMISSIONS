@@ -1,3 +1,4 @@
+import { SectionGeometry } from "@/components/section-geometry";
 import {
   Accordion,
   AccordionContent,
@@ -9,8 +10,10 @@ import { faqs } from "@/data/site";
 
 export function FaqSection() {
   return (
-    <section id="faq" className="bg-navy-50/50 py-20 sm:py-24">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <section id="faq" className="relative overflow-hidden bg-navy-50/50 py-24 sm:py-32">
+      <SectionGeometry shape="dotsDense" size={300} className="-right-6 top-10 text-navy-200" />
+
+      <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           align="center"
           eyebrow="FAQ"

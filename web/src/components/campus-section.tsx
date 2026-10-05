@@ -1,3 +1,4 @@
+import { SectionGeometry } from "@/components/section-geometry";
 import { BookOpen, Cpu, HeartPulse, Sparkles } from "lucide-react";
 
 import { BlurFade } from "@/components/animated/spotlight-card";
@@ -9,8 +10,10 @@ const ICONS = [BookOpen, Cpu, Sparkles, HeartPulse];
 /** Learning ecosystem — figures from the HR Conclave 2026 deck, slide 8. */
 export function CampusSection() {
   return (
-    <section className="bg-white py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-white py-24 sm:py-32">
+      <SectionGeometry shape="blob" size={260} className="-right-12 -top-16 text-navy-50" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Learning ecosystem"
           title="Where teaching, study and hands-on work take place."

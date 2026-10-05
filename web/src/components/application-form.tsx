@@ -217,10 +217,10 @@ export function ApplicationForm() {
     <form
       onSubmit={onSubmit}
       noValidate
-      className="flex h-full flex-col rounded-3xl border border-navy-100 bg-white p-6 shadow-lg shadow-navy-900/5 sm:p-7"
+      className="flex flex-col rounded-3xl border border-navy-100 bg-white p-6 shadow-lg shadow-navy-900/5 sm:p-7"
     >
       <div className="mb-6">
-        <h3 className="text-lg font-bold tracking-tight text-navy sm:text-xl">
+        <h3 className="text-base font-bold tracking-tight text-navy sm:text-lg">
           Admission enquiry
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -237,7 +237,7 @@ export function ApplicationForm() {
         </div>
       )}
 
-      <div className="flex-1 space-y-4">
+      <div className="space-y-4">
         <Field id="studentName" label="Student full name" error={errors.studentName}>
           <Input
             {...fieldProps("studentName")}
@@ -281,26 +281,30 @@ export function ApplicationForm() {
           </Field>
         </div>
 
-        <Field id="fatherName" label="Father / guardian name" error={errors.fatherName}>
-          <Input
-            {...fieldProps("fatherName")}
-            onChange={(e) => set("fatherName")(e.target.value)}
-            placeholder="e.g. Ramesh Sharma"
-            autoComplete="name"
-            className={CONTROL}
-          />
-        </Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field id="fatherName" label="Father / guardian name" error={errors.fatherName}>
+            <Input
+              {...fieldProps("fatherName")}
+              onChange={(e) => set("fatherName")(e.target.value)}
+              placeholder="e.g. Ramesh Sharma"
+              autoComplete="name"
+              className={CONTROL}
+            />
+          </Field>
 
-        <Field id="fatherMobile" label="Father / guardian mobile" error={errors.fatherMobile}>
-          <Input
-            {...fieldProps("fatherMobile")}
-            onChange={(e) => set("fatherMobile")(e.target.value.replace(/\D/g, "").slice(0, 10))}
-            placeholder="10-digit number"
-            inputMode="numeric"
-            autoComplete="tel"
-            className={CONTROL}
-          />
-        </Field>
+          <Field id="fatherMobile" label="Father / guardian mobile" error={errors.fatherMobile}>
+            <Input
+              {...fieldProps("fatherMobile")}
+              onChange={(e) =>
+                set("fatherMobile")(e.target.value.replace(/\D/g, "").slice(0, 10))
+              }
+              placeholder="10-digit number"
+              inputMode="numeric"
+              autoComplete="tel"
+              className={CONTROL}
+            />
+          </Field>
+        </div>
 
         <Field id="interCollegeName" label="Inter college / school" error={errors.interCollegeName}>
           <Input
@@ -350,7 +354,7 @@ export function ApplicationForm() {
           type="submit"
           size="lg"
           disabled={status === "submitting"}
-          className="h-12 w-full rounded-xl bg-ember-gradient text-sm font-bold text-white shadow-lg shadow-ember/20 transition-all hover:opacity-95 hover:shadow-xl hover:shadow-ember/30 active:scale-[0.99] cursor-pointer"
+          className="h-11 w-full rounded-xl bg-ember-gradient text-sm font-bold text-white shadow-lg shadow-ember/20 transition-all hover:opacity-95 hover:shadow-xl hover:shadow-ember/30 active:scale-[0.99] cursor-pointer"
         >
           {status === "submitting" ? (
             <>
@@ -370,4 +374,4 @@ export function ApplicationForm() {
       </div>
     </form>
   );
-}
+}

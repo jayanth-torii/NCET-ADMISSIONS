@@ -78,9 +78,9 @@ click-to-call phone numbers in the body.
 | | |
 |---|---|
 | **Hero** — animated aurora, word-by-word reveal, dual CTA | **Stats** — scroll-triggered counters (NCET at a Glance, 2025–26) |
-| **Accreditation marquee** — 10 verified accreditations | **Six institutions** — with the official "Wings of Nagarjuna" graphic |
-| **Programmes** — filterable by UG / PG, hover spotlight | **Learning ecosystem** — library, labs, innovation spaces |
-| **Admission process** — five clear stages | **Counsellor + application form** — side by side |
+| **Accreditation marquee** — 10 verified accreditations | **Counsellor + application form** — side by side |
+| **Programmes** — infinite 3D card carousel, UG / PG | **Learning ecosystem** — library, labs, innovation spaces |
+| **Admission process** — five clear stages | |
 
 ---
 
@@ -92,10 +92,10 @@ Education Society, Yelahanka, Bengaluru:
 | Unit | Notes |
 |---|---|
 | Nagarjuna College of Engineering & Technology | Autonomous under VTU · NAAC A+ · Devanahalli |
-| Nagarjuna Novus Vidyaniketan | |
+| Novus Early Learning Center | |
 | Nagarjuna Degree College | UGC recognised · Yelahanka |
 | Nagarjuna College of Management Studies | |
-| Nagarjuna Pre-University College | |
+| Nagarjuna Pre University College | |
 
 > Institution names come from the official *HR Conclave 2026* deck ("Wings of
 > Nagarjuna"). Programme detail is attached only where it could be corroborated
@@ -358,7 +358,7 @@ ngi-admissions-ap/
 │       ├── data/site.ts      ← every word and number lives here
 │       └── lib/
 │
-└── scripts/                  e2e.js · style-audit.js
+└── scripts/                  e2e.js · admin-e2e.js · style-audit.js
 ```
 
 ---

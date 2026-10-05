@@ -163,8 +163,9 @@
   }
   html {
     @apply font-sans scroll-smooth;
-    /* Nudges the whole scale up one notch, matching NCET's denser, larger type. */
-    font-size: 17px;
+    /* NCET runs a dense 16px base; keeping it here stops headings and
+       controls from reading over-scaled next to the reference site. */
+    font-size: 16px;
   }
 
   /* Product Sans only ships a 400/500/700 cut. Stating 600 explicitly keeps the
