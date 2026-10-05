@@ -1,0 +1,287 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ---- NGI brand palette (matches ncet.co.in) ---- */
+  --color-navy: #0a1f44;
+  --color-ember: #f6872a;
+
+  --color-navy-50: #f2f5fa;
+  --color-navy-100: #e2e9f4;
+  --color-navy-200: #c3d1e7;
+  --color-navy-300: #94abcf;
+  --color-navy-400: #5f7db0;
+  --color-navy-500: #3c5b94;
+  --color-navy-600: #2b4478;
+  --color-navy-700: #1e3360;
+  --color-navy-800: #132547;
+  --color-navy-900: #0a1f44;
+  --color-navy-950: #06132b;
+
+  --color-ember-50: #fff7ed;
+  --color-ember-100: #ffedd5;
+  --color-ember-200: #fed7aa;
+  --color-ember-300: #fdba74;
+  --color-ember-400: #fb923c;
+  --color-ember-500: #f6872a;
+  --color-ember-600: #ea580c;
+  --color-ember-700: #c2410c;
+  --color-ember-800: #9a3412;
+  --color-ember-900: #7c2d12;
+}
+
+/*
+ * Brand tokens are sampled directly from the live NCET site:
+ *   --ncet-navy:   #0A1F44  (118 uses on the homepage — the primary surface)
+ *   --ncet-ember:  #F6872A  (101 uses on the homepage — the accent/CTA colour)
+ */
+:root {
+  --background: oklch(1 0 0);
+  --foreground: var(--ncet-navy);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ncet-navy);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ncet-navy);
+  --primary: var(--ncet-navy);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: var(--ncet-navy-50);
+  --secondary-foreground: var(--ncet-navy);
+  --muted: var(--ncet-navy-50);
+  --muted-foreground: var(--ncet-navy-600);
+  --accent: var(--ncet-ember-50);
+  --accent-foreground: var(--ncet-ember-700);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--ncet-navy-100);
+  --input: var(--ncet-navy-100);
+  --ring: var(--ncet-ember);
+
+  --chart-1: var(--ncet-ember);
+  --chart-2: var(--ncet-navy-600);
+  --chart-3: var(--ncet-navy-400);
+  --chart-4: var(--ncet-ember-600);
+  --chart-5: var(--ncet-navy-800);
+
+  --radius: 0.75rem;
+
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: var(--ncet-navy);
+  --sidebar-primary: var(--ncet-navy);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: var(--ncet-navy-50);
+  --sidebar-accent-foreground: var(--ncet-navy);
+  --sidebar-border: var(--ncet-navy-100);
+  --sidebar-ring: var(--ncet-ember);
+
+  /* Raw brand hex — referenced by the animations and gradients below. */
+  --ncet-navy: #0a1f44;
+  --ncet-navy-800: #132547;
+  --ncet-navy-600: #2b4478;
+  --ncet-ember: #f6872a;
+  --ncet-ember-600: #ea580c;
+}
+
+.dark {
+  --background: var(--ncet-navy);
+  --foreground: oklch(0.98 0 0);
+  --card: var(--ncet-navy-950);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: var(--ncet-navy-950);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: var(--ncet-ember);
+  --primary-foreground: var(--ncet-navy);
+  --secondary: var(--ncet-navy-800);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: var(--ncet-navy-800);
+  --muted-foreground: var(--ncet-navy-200);
+  --accent: var(--ncet-navy-800);
+  --accent-foreground: var(--ncet-ember-300);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: var(--ncet-ember);
+  --sidebar: var(--ncet-navy-950);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: var(--ncet-ember);
+  --sidebar-primary-foreground: var(--ncet-navy);
+  --sidebar-accent: var(--ncet-navy-800);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: var(--ncet-ember);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans scroll-smooth;
+    /* Nudges the whole scale up one notch, matching NCET's denser, larger type. */
+    font-size: 17px;
+  }
+
+  /* Product Sans only ships a 400/500/700 cut. Stating 600 explicitly keeps the
+     browser from synthesising a faux-bold from the 500 face. */
+  strong,
+  b {
+    font-weight: 700;
+  }
+  /* Respect users who ask for less motion — the decorative animations all
+     collapse to a static, readable state. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    /* Scroll-triggered reveals never fire for these users, so force the
+       hidden start state back to fully visible. */
+    [data-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Ember gradient used on primary CTAs and hero accents. */
+  .bg-ember-gradient {
+    background-image: linear-gradient(
+      135deg,
+      var(--ncet-ember) 0%,
+      var(--ncet-ember-600) 100%
+    );
+  }
+
+  .text-ember-gradient {
+    background-image: linear-gradient(
+      135deg,
+      var(--ncet-ember) 0%,
+      var(--ncet-ember-600) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Subtle navy grid used behind dark sections. */
+  .bg-navy-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  /* Animata / Lightswind inspired drifting conic glow. */
+  @keyframes ngi-aurora {
+    0%,
+    100% {
+      transform: translate3d(-12%, -8%, 0) rotate(0deg);
+      opacity: 0.55;
+    }
+    50% {
+      transform: translate3d(10%, 6%, 0) rotate(180deg);
+      opacity: 0.85;
+    }
+  }
+
+  @keyframes ngi-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes ngi-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @keyframes ngi-pulse-ring {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.6;
+    }
+    70%,
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
+  .animate-aurora {
+    animation: ngi-aurora 18s ease-in-out infinite;
+  }
+  .animate-marquee {
+    animation: ngi-marquee 38s linear infinite;
+  }
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: ngi-shimmer 6s linear infinite;
+  }
+  .animate-pulse-ring {
+    animation: ngi-pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
