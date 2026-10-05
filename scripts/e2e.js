@@ -12,6 +12,33 @@ const { chromium } = require("playwright");
 
 const WEB = process.env.WEB_URL || "http://localhost:3000";
 const API = process.env.API_URL || "http://localhost:4005";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "jayanth.m@ncetmail.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Admin@123";
+const ADMIN_OTP = process.env.ADMIN_OTP || "000000";
+
+/**
+ * Applicant data is admin-only, so verifying that a submission reached Mongo
+ * needs a developer session. Runs the same two-step login the panel uses.
+ */
+async function getAdminToken() {
+  const login = await fetch(`${API}/api/admin/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: ADMIN_EMAIL, password: ADMIN_PASSWORD }),
+  });
+  if (!login.ok) throw new Error(`admin login failed: ${login.status}`);
+
+  const { challenge, email } = await login.json();
+
+  const verify = await fetch(`${API}/api/admin/verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp: ADMIN_OTP, challenge }),
+  });
+  if (!verify.ok) throw new Error(`admin verify failed: ${verify.status}`);
+
+  return (await verify.json()).token;
+}
 
 const APPLICANT = {
   studentName: "Anitha Sharma",
@@ -91,7 +118,10 @@ const check = (name, passed, detail = "") => {
   check("success state renders after submit", true);
 
   // --- The record actually reached the API/Mongo ---
-  const res = await fetch(`${API}/api/applications?limit=200`);
+  const token = await getAdminToken();
+  const res = await fetch(`${API}/api/applications?limit=200`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   const { applications } = await res.json();
   const stored = applications.find((a) => a.appNumber === APPLICANT.appNumber);
 

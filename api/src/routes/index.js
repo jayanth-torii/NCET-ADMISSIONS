@@ -34,4 +34,17 @@ router.post("/admin/verify", asyncHandler(adminController.verify));
 router.get("/admin/me", asyncHandler(adminController.me));
 router.get("/admin/stats", requireAdmin, asyncHandler(adminController.stats));
 
+// The dashboard reads and updates applications under the /admin prefix, so the
+// list and status routes are mounted here too (both admin-gated).
+router.get(
+  "/admin/applications",
+  requireAdmin,
+  asyncHandler(applicationController.listApplications)
+);
+router.patch(
+  "/admin/applications/:id/status",
+  requireAdmin,
+  asyncHandler(applicationController.updateStatus)
+);
+
 module.exports = router;

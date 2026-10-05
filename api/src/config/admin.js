@@ -52,6 +52,9 @@ const registerFailure = (key) => {
 
 const clearFailures = (key) => attempts.delete(key);
 
+/** Drops every recorded failure. Used by tests between cases. */
+const resetAttempts = () => attempts.clear();
+
 const isLocked = (key) => {
   const entry = attempts.get(key);
   if (!entry) return false;
@@ -90,5 +93,6 @@ module.exports = {
   verifyOtp,
   registerFailure,
   clearFailures,
+  resetAttempts,
   isLocked,
 };

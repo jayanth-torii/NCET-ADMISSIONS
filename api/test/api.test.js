@@ -5,13 +5,8 @@
  * This exercises the same Mongoose schemas, validators and controllers that run
  * in production, so it catches schema/type mismatches before deploy.
  */
-const mongoose = require("mongoose");
-const { MongoMemoryServer } = require("mongodb-memory-server");
-
-process.env.MONGODB_URI = "mongodb://127.0.0.1:27017/ngi_admissions_test";
-
 let app;
-let mongod;
+let mongoose;
 let request;
 let assert;
 
@@ -30,19 +25,29 @@ const VALID = {
 before(async () => {
   assert = (await import("node:assert/strict")).default;
   request = (await import("supertest")).default;
+  app = global.__app;
+  mongoose = global.__mongoose;
 
-  mongod = await MongoMemoryServer.create();
-  await mongoose.connect(mongod.getUri("ngi_admissions_test"));
+  // Start from a clean collection so ordering between files cannot skew counts.
+  await mongoose.connection.collection("applications").deleteMany({});
 
-  // The app module reads MONGODB_URI at require time; it is only used for the
-  // boot guard, so reuse the already-open connection.
-  app = require("../src/app");
+  // Reading applicant data is admin-only, so these tests carry a real session
+  // token rather than relying on the routes being public.
+  const login = await request(app)
+    .post("/api/admin/login")
+    .send({ email: process.env.ADMIN_EMAIL, password: "Admin@123" });
+  const verify = await request(app)
+    .post("/api/admin/verify")
+    .send({
+      email: login.body.email,
+      otp: process.env.ADMIN_OTP,
+      challenge: login.body.challenge,
+    });
+  assert.ok(verify.body.token, "admin sign-in failed — cannot run protected-route tests");
+  auth = { Authorization: `Bearer ${verify.body.token}` };
 });
 
-after(async () => {
-  await mongoose.disconnect();
-  if (mongod) await mongod.stop();
-});
+let auth;
 
 describe("POST /api/applications", () => {
   it("accepts a valid application and uppercases the app number", async () => {
@@ -117,7 +122,7 @@ describe("POST /api/applications", () => {
 
 describe("GET /api/applications", () => {
   it("lists applications newest first", async () => {
-    const res = await request(app).get("/api/applications");
+    const res = await request(app).get("/api/applications").set(auth);
 
     assert.equal(res.status, 200);
     assert.ok(res.body.total >= 1);
@@ -125,7 +130,7 @@ describe("GET /api/applications", () => {
   });
 
   it("filters by status", async () => {
-    const res = await request(app).get("/api/applications?status=new");
+    const res = await request(app).get("/api/applications?status=new").set(auth);
 
     assert.equal(res.status, 200);
     assert.ok(res.body.applications.every((a) => a.status === "new"));
@@ -137,6 +142,7 @@ describe("PATCH /api/applications/:id/status", () => {
     const created = await request(app).post("/api/applications").send({ ...VALID, studentName: "Rahul K" });
     const res = await request(app)
       .patch(`/api/applications/${created.body.application.id}/status`)
+      .set(auth)
       .send({ status: "contacted" });
 
     assert.equal(res.status, 200);
@@ -146,6 +152,7 @@ describe("PATCH /api/applications/:id/status", () => {
   it("returns 404 for an unknown id", async () => {
     const res = await request(app)
       .patch("/api/applications/64b7f9f9f9f9f9f9f9f9f9f9/status")
+      .set(auth)
       .send({ status: "contacted" });
 
     assert.equal(res.status, 404);

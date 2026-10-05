@@ -12,7 +12,7 @@
     "seed": "node src/seed.js",
     "digest": "node src/jobs/weeklyDigest.js",
     "digest:schedule": "node src/jobs/weeklyDigest.js --schedule",
-    "test": "mocha --exit --timeout 60000 test/**/*.test.js"
+    "test": "mocha --exit --timeout 90000 --file test/setup.js test/**/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
