@@ -10,6 +10,7 @@ export function ProcessSection() {
           eyebrow="How it works"
           title="A simple, transparent, merit-based journey."
           description="Five clear stages from enquiry to enrolment. No hidden steps, no last-minute surprises."
+          className="[&_p]:text-justify sm:[&_p]:text-left"
         />
 
         <ol className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
@@ -23,7 +24,7 @@ export function ProcessSection() {
                   {step.step}
                 </span>
                 <h3 className="mt-5 text-base font-extrabold text-navy">{step.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-justify sm:text-left">
                   {step.description}
                 </p>
               </li>
