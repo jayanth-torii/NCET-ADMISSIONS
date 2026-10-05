@@ -97,7 +97,7 @@ const check = (name, passed, detail = "") => {
   );
 
   // --- Empty submit is blocked client-side ---
-  await page.getByRole("button", { name: /submit admission enquiry/i }).click();
+  await page.getByRole("button", { name: /submit enquiry/i }).click();
   const errorCount = await page.getByRole("alert").count();
   check("empty submit shows validation errors", errorCount > 0, `${errorCount} error(s)`);
   check(
@@ -107,7 +107,7 @@ const check = (name, passed, detail = "") => {
 
   // --- Invalid mobile is rejected client-side ---
   await page.locator('[name="studentMobile"]').fill("12345");
-  await page.getByRole("button", { name: /submit admission enquiry/i }).click();
+  await page.getByRole("button", { name: /submit enquiry/i }).click();
   check(
     "invalid mobile blocks submission",
     (await page.getByText(/Thank you for applying/).count()) === 0
@@ -125,7 +125,7 @@ const check = (name, passed, detail = "") => {
   await page.locator('[name="appNumber"]').fill(APPLICANT.appNumber);
   await page.locator('[name="homeTownAddress"]').fill(APPLICANT.homeTownAddress);
 
-  await page.getByRole("button", { name: /submit admission enquiry/i }).click();
+  await page.getByRole("button", { name: /submit enquiry/i }).click();
 
   await page.getByText(/Thank you for applying/).waitFor({ timeout: 15000 });
   check("success state renders after submit", true);
@@ -173,7 +173,7 @@ const check = (name, passed, detail = "") => {
   );
 
   const counsellorY = (await page.getByText("Venugopal Reddy N").first().boundingBox()).y;
-  const formY = (await page.getByRole("button", { name: /submit admission enquiry/i }).boundingBox()).y;
+  const formY = (await page.getByRole("button", { name: /submit enquiry/i }).boundingBox()).y;
   check("counsellor block sits above the form", counsellorY < formY, `${Math.round(counsellorY)} < ${Math.round(formY)}`);
 
   // --- Testimonials section removed ---
@@ -235,9 +235,15 @@ const check = (name, passed, detail = "") => {
 
   check("institutions data has six units", instNames.length === 6, `${instNames.length} found`);
 
+  // The standalone institutions section was removed; the six units are now
+  // reached through the footer directory, so assert they are still linked.
   for (const name of instNames) {
     check(`institution listed: ${name}`, (await page.getByText(name).count()) >= 1);
   }
+  check(
+    "no standalone institutions section",
+    (await page.locator("#institutions").count()) === 0
+  );
 
   // --- Verified "at a glance" figures from the deck ---
   const statsText = await page.locator("dl").first().innerText();
@@ -246,7 +252,7 @@ const check = (name, passed, detail = "") => {
   }
 
   // --- Anchor navigation targets all resolve ---
-  for (const id of ["institutions", "programmes", "process", "apply", "faq"]) {
+  for (const id of ["programmes", "process", "apply", "faq"]) {
     check(`section #${id} exists`, (await page.locator(`#${id}`).count()) === 1);
   }
 

@@ -26,14 +26,6 @@ export function ApplySection() {
                 >
                   Your counsellor details
                 </h2>
-                <div className="mt-3 space-y-2 text-xs sm:text-sm leading-relaxed text-muted-foreground text-justify">
-                  <p>
-                    Every enquiry submitted through this admissions portal is routed directly to your assigned regional admission director — ensuring you receive personalized guidance rather than generic call-centre responses.
-                  </p>
-                  <p>
-                    Connect immediately for detailed branch selection, scholarship options, fee structures, entrance exam score analysis, and expedited campus visit scheduling at our 60-acre flagship campus.
-                  </p>
-                </div>
               </div>
 
               <div className="w-full">

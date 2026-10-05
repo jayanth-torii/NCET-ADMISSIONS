@@ -70,7 +70,7 @@ export function SiteFooter() {
               {institutions.map((institution) => (
                 <li key={institution.slug}>
                   <Link
-                    href={institution.website ?? "#institutions"}
+                    href={institution.website ?? "#"}
                     target={institution.website ? "_blank" : undefined}
                     rel={institution.website ? "noopener noreferrer" : undefined}
                     className="group inline-flex items-start gap-2 text-sm text-navy-300 hover:text-ember no-underline hover:no-underline transition-colors"
