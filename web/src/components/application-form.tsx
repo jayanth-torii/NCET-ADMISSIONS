@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Loader2, Send, User, Phone, GraduationCap, MapPin, Sparkles, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Loader2, Send, User, Phone, GraduationCap, Sparkles, ShieldCheck } from "lucide-react";
 import { motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { API_URL } from "@/lib/fetcher";
-import { cn } from "@/lib/utils";
 
 type FormValues = {
   studentName: string;

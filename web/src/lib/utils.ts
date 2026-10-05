@@ -41,7 +41,7 @@ export function formatDate(date: Date, options?: Intl.DateTimeFormatOptions) {
 }
 
 // Utility function to debounce function calls
-export function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
+export function debounce<T extends (...args: never[]) => void>(func: T, wait: number) {
   let timeout: ReturnType<typeof setTimeout> | null = null;
   return function (...args: Parameters<T>) {
     const later = () => {
@@ -56,7 +56,7 @@ export function debounce<T extends (...args: any[]) => void>(func: T, wait: numb
 }
 
 // Utility function to throttle function calls
-export function throttle<T extends (...args: any[]) => void>(func: T, limit: number) {
+export function throttle<T extends (...args: never[]) => void>(func: T, limit: number) {
   let inThrottle = false;
   return function (...args: Parameters<T>) {
     if (!inThrottle) {

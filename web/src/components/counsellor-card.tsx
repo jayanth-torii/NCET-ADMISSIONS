@@ -32,7 +32,7 @@ const waLink = (phone: string) =>
  * page always offers a way to reach a human.
  */
 export function CounsellorCard() {
-  const { data, isLoading } = useSWR<CounselorResponse>(
+  const { data } = useSWR<CounselorResponse>(
     `${API_URL}/api/counselors`,
     fetcher,
     { revalidateOnFocus: false, shouldRetryOnError: false }
@@ -44,9 +44,6 @@ export function CounsellorCard() {
       "Call or WhatsApp for programme guidance, eligibility clarification and campus visit scheduling.",
     languages: ["Telugu", "English", "Kannada", "Hindi"],
   };
-
-  // True only when we fell back because the API failed, not before it loads.
-  const usingFallback = !data && !isLoading;
 
   return (
     <div className="flex flex-col gap-4">

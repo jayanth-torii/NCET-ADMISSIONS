@@ -9,6 +9,8 @@
  * Requires the API on :4005 and the web app on :3000 to be running.
  */
 const { chromium } = require("playwright");
+const { readFileSync } = require("node:fs");
+const path = require("node:path");
 
 const WEB = process.env.WEB_URL || "http://localhost:3000";
 const API = process.env.API_URL || "http://localhost:4005";
@@ -70,51 +72,62 @@ const check = (name, passed, detail = "") => {
   check("page loads", (await page.title()).includes("NGI Admissions"), await page.title());
 
   // --- All nine form fields are present and labelled ---
-  // Labels carry a visual required marker, so match on the label prefix.
+  // Addressed by input name rather than label text: marketing copy rewords
+  // labels often, but the names are what the API contract depends on.
   const FIELDS = [
-    "Student name", "Student mobile", "Gender",
-    "Father / guardian name", "Father / guardian mobile",
-    "Inter college name", "Inter college place",
-    "Application number", "Home town address",
+    ["studentName", "Student name"],
+    ["studentMobile", "Student mobile"],
+    ["fatherName", "Father / guardian name"],
+    ["fatherMobile", "Father / guardian mobile"],
+    ["interCollegeName", "Inter college name"],
+    ["interCollegePlace", "Inter college place"],
+    ["appNumber", "Application number"],
+    ["homeTownAddress", "Home town address"],
   ];
 
-  for (const label of FIELDS) {
-    const count = await page.getByLabel(new RegExp(`^${label}`)).count();
+  for (const [name, label] of FIELDS) {
+    const count = await page.locator(`[name="${name}"]`).count();
     check(`field "${label}" exists`, count === 1, `${count} match(es)`);
   }
 
+  // Gender is a listbox rather than a native input, so assert its label.
+  check(
+    `field "Gender" exists`,
+    (await page.getByLabel(/^Gender/).count()) === 1
+  );
+
   // --- Empty submit is blocked client-side ---
-  await page.getByRole("button", { name: /submit application/i }).click();
+  await page.getByRole("button", { name: /submit admission enquiry/i }).click();
   const errorCount = await page.getByRole("alert").count();
   check("empty submit shows validation errors", errorCount > 0, `${errorCount} error(s)`);
   check(
     "still on the form (no false success)",
-    (await page.getByText("Application received").count()) === 0
+    (await page.getByText(/Thank you for applying/).count()) === 0
   );
 
   // --- Invalid mobile is rejected client-side ---
-  await page.getByLabel(/^Student mobile/).fill("12345");
-  await page.getByRole("button", { name: /submit application/i }).click();
+  await page.locator('[name="studentMobile"]').fill("12345");
+  await page.getByRole("button", { name: /submit admission enquiry/i }).click();
   check(
     "invalid mobile blocks submission",
-    (await page.getByText("Application received").count()) === 0
+    (await page.getByText(/Thank you for applying/).count()) === 0
   );
 
   // --- Fill the form properly ---
-  await page.getByLabel(/^Student name/).fill(APPLICANT.studentName);
-  await page.getByLabel(/^Student mobile/).fill(APPLICANT.studentMobile);
+  await page.locator('[name="studentName"]').fill(APPLICANT.studentName);
+  await page.locator('[name="studentMobile"]').fill(APPLICANT.studentMobile);
   await page.getByLabel(/^Gender/).click();
   await page.getByRole("option", { name: "Female" }).click();
-  await page.getByLabel(/^Father \/ guardian name/).fill(APPLICANT.fatherName);
-  await page.getByLabel(/^Father \/ guardian mobile/).fill(APPLICANT.fatherMobile);
-  await page.getByLabel(/^Inter college name/).fill(APPLICANT.interCollegeName);
-  await page.getByLabel(/^Inter college place/).fill(APPLICANT.interCollegePlace);
-  await page.getByLabel(/^Application number/).fill(APPLICANT.appNumber);
-  await page.getByLabel(/^Home town address/).fill(APPLICANT.homeTownAddress);
+  await page.locator('[name="fatherName"]').fill(APPLICANT.fatherName);
+  await page.locator('[name="fatherMobile"]').fill(APPLICANT.fatherMobile);
+  await page.locator('[name="interCollegeName"]').fill(APPLICANT.interCollegeName);
+  await page.locator('[name="interCollegePlace"]').fill(APPLICANT.interCollegePlace);
+  await page.locator('[name="appNumber"]').fill(APPLICANT.appNumber);
+  await page.locator('[name="homeTownAddress"]').fill(APPLICANT.homeTownAddress);
 
-  await page.getByRole("button", { name: /submit application/i }).click();
+  await page.getByRole("button", { name: /submit admission enquiry/i }).click();
 
-  await page.getByText("Application received").waitFor({ timeout: 15000 });
+  await page.getByText(/Thank you for applying/).waitFor({ timeout: 15000 });
   check("success state renders after submit", true);
 
   // --- The record actually reached the API/Mongo ---
@@ -160,7 +173,7 @@ const check = (name, passed, detail = "") => {
   );
 
   const counsellorY = (await page.getByText("Venugopal Reddy N").first().boundingBox()).y;
-  const formY = (await page.getByRole("button", { name: /submit application/i }).boundingBox()).y;
+  const formY = (await page.getByRole("button", { name: /submit admission enquiry/i }).boundingBox()).y;
   check("counsellor block sits above the form", counsellorY < formY, `${Math.round(counsellorY)} < ${Math.round(formY)}`);
 
   // --- Testimonials section removed ---
@@ -207,14 +220,22 @@ const check = (name, passed, detail = "") => {
     .evaluate((el) => getComputedStyle(el).fontFamily);
   check("hero heading uses Product Sans", /productsans/i.test(heroFont), heroFont);
 
-  // --- Six group institutions from the deck ---
-  for (const name of [
-    "Nagarjuna College of Engineering & Technology",
-    "Nagarjuna Novus Vidyaniketan",
-    "Nagarjuna Degree College",
-    "Nagarjuna College of Management Studies",
-    "Nagarjuna Pre-University College",
-  ]) {
+  // --- Every institution in the data file is rendered on the page ---
+  // Parsed out of the data module as text so editorial renames do not need a
+  // test edit (this script is plain Node and cannot import TypeScript).
+  const siteSource = readFileSync(
+    path.join(__dirname, "..", "web", "src", "data", "site.ts"),
+    "utf8"
+  );
+  const institutionsBlock = siteSource.slice(
+    siteSource.indexOf("export const institutions"),
+    siteSource.indexOf("export const stats")
+  );
+  const instNames = [...institutionsBlock.matchAll(/^\s{4}name: "([^"]+)"/gm)].map((m) => m[1]);
+
+  check("institutions data has six units", instNames.length === 6, `${instNames.length} found`);
+
+  for (const name of instNames) {
     check(`institution listed: ${name}`, (await page.getByText(name).count()) >= 1);
   }
 
@@ -228,7 +249,17 @@ const check = (name, passed, detail = "") => {
   for (const id of ["institutions", "programmes", "process", "apply", "faq"]) {
     check(`section #${id} exists`, (await page.locator(`#${id}`).count()) === 1);
   }
-  check("standalone #counsellor section removed", (await page.locator("#counsellor").count()) === 0);
+
+  // The counsellor heading is an anchor inside the combined apply section, not a
+  // standalone section of its own — so it must live within #apply.
+  check(
+    "#counsellor anchor lives inside #apply",
+    (await page.locator("#apply #counsellor").count()) === 1
+  );
+  check(
+    "no standalone counsellor section",
+    (await page.locator("main > section#counsellor").count()) === 0
+  );
 
   // --- Mobile viewport sanity check ---
   await page.setViewportSize({ width: 390, height: 844 });

@@ -3,6 +3,7 @@ import { ApplySection } from "@/components/apply-section";
 import { CampusSection } from "@/components/campus-section";
 import { FaqSection } from "@/components/faq-section";
 import { Hero } from "@/components/hero";
+import { InstitutionsSection } from "@/components/institutions-section";
 import { ProcessSection } from "@/components/process-section";
 import { ProgrammesSection } from "@/components/programmes-section";
 import { SiteFooter } from "@/components/site-footer";
@@ -20,6 +21,7 @@ export default function Home() {
         {/* Counsellor details and the application form sit above, so a
             visitor learns who will call them before browsing programmes. */}
         <ApplySection />
+        <InstitutionsSection />
         <ProgrammesSection />
         <CampusSection />
         <ProcessSection />
