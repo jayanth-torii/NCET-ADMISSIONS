@@ -7,6 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "node src/server.js",
+    "build": "echo \"No build step required\"",
     "dev": "nodemon src/server.js",
     "seed": "node src/seed.js",
     "digest": "node src/jobs/weeklyDigest.js",
@@ -14,12 +15,14 @@
     "test": "mocha --exit --timeout 60000 test/**/*.test.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.9.5",
     "nodemailer": "^10.0.14"
   },
