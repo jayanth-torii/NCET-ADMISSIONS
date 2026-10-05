@@ -1,4 +1,3 @@
-import { SectionGeometry } from "@/components/section-geometry";
 import { BlurFade } from "@/components/animated/spotlight-card";
 import { SectionHeading } from "@/components/section-heading";
 import { processSteps } from "@/data/site";
@@ -6,12 +5,6 @@ import { processSteps } from "@/data/site";
 export function ProcessSection() {
   return (
     <section id="process" className="relative overflow-hidden bg-white py-24 sm:py-32">
-      <SectionGeometry
-        shape="quarter"
-        size={240}
-        className="-bottom-16 -left-16 text-navy-50"
-      />
-
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="How it works"

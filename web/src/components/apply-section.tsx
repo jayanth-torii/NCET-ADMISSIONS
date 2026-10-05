@@ -1,7 +1,6 @@
 import { ApplicationForm } from "@/components/application-form";
 import { Stagger, StaggerItem } from "@/components/animated/motion-ui";
 import { CounsellorCard } from "@/components/counsellor-card";
-import { SectionGeometry } from "@/components/section-geometry";
 
 /**
  * The combined enquiry block: counsellor details first, application form second.
@@ -14,13 +13,6 @@ export function ApplySection() {
       className="relative overflow-hidden bg-navy-50/50 py-16 sm:py-20 lg:py-28"
     >
       {/* Faint geometry so the band does not read as empty space. */}
-      <SectionGeometry shape="quarter" size={300} className="-left-20 -top-16 text-navy-100" />
-      <SectionGeometry
-        shape="dotsDense"
-        size={260}
-        className="-right-8 bottom-6 text-navy-200"
-      />
-
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Stagger className="grid gap-6 lg:grid-cols-2 lg:gap-8 items-start">
           {/* --- 1. Counsellor details (Left Column) --- */}
@@ -46,13 +38,7 @@ export function ApplySection() {
                 </div>
               </div>
 
-              {/* Anchors the base of the column when the form is the taller one. */}
-              <SectionGeometry
-                shape="blob"
-                size={200}
-                className="-bottom-16 -right-10 text-navy-50"
-              />
-            </div>
+              {/* Anchors the base of the column when the form is the taller one. */}            </div>
           </StaggerItem>
 
           {/* --- 2. Application form (Right Column) --- */}

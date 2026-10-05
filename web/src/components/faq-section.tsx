@@ -1,19 +1,13 @@
-import { SectionGeometry } from "@/components/section-geometry";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { SectionHeading } from "@/components/section-heading";
 import { faqs } from "@/data/site";
 
 export function FaqSection() {
   return (
-    <section id="faq" className="relative overflow-hidden bg-navy-50/50 py-24 sm:py-32">
-      <SectionGeometry shape="dotsDense" size={300} className="-right-6 top-10 text-navy-200" />
-
-      <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <section
+      id="faq"
+      className="relative overflow-hidden bg-navy-50/50 py-16 sm:py-20 lg:py-24"
+    >
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           align="center"
           eyebrow="FAQ"
@@ -21,20 +15,30 @@ export function FaqSection() {
           description="If your question is not here, call the regional desk and ask for the admissions counsellor."
         />
 
-        {/* Base UI accordion: single-open is the default (multiple defaults to false). */}
-        <Accordion className="mt-10">
-          {faqs.map((faq, i) => (
-            <AccordionItem key={faq.question} value={`item-${i}`}>
-              <AccordionTrigger className="text-left font-semibold text-navy hover:underline">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="leading-relaxed text-muted-foreground">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <div className="mt-10 grid gap-8 sm:grid-cols-2">
+          {faqs.map((faq, i) => {
+            const idx = Math.floor(i / 2);
+            const rank = (i % 2) === 0 ? 1 : 2;
+            const anchor = `faq-${rank}-${idx}`;
+            const question = faq.question;
+            const answer = faq.answer;
+
+            return (
+              <article
+                key={faq.question}
+                id={anchor}
+                className="flex flex-col gap-2 rounded-2xl border border-navy-100 bg-white p-5 shadow-sm shadow-navy-900/3"
+              >
+                <span className="inline-block rounded-full bg-ember-50 border border-ember-200/60 px-2 py-0.5 text-[11px] font-black uppercase tracking-wide text-ember-700">
+                  {rank === 1 ? "Q" : "A"}
+                </span>
+                <p className="text-sm font-bold text-navy">{question}</p>
+                <p className="leading-relaxed text-sm text-muted-foreground">{answer}</p>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
-}
+}

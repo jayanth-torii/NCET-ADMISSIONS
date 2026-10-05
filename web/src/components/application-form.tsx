@@ -306,37 +306,41 @@ export function ApplicationForm() {
           </Field>
         </div>
 
-        <Field id="interCollegeName" label="Inter college / school" error={errors.interCollegeName}>
-          <Input
-            {...fieldProps("interCollegeName")}
-            onChange={(e) => set("interCollegeName")(e.target.value)}
-            placeholder="e.g. Sri Chaitanya Junior College"
-            className={CONTROL}
-          />
-        </Field>
+        <div>
+          <Field id="interCollegeName" label="Inter college / school" error={errors.interCollegeName}>
+            <Input
+              {...fieldProps("interCollegeName")}
+              onChange={(e) => set("interCollegeName")(e.target.value)}
+              placeholder="e.g. Sri Chaitanya Junior College"
+              className={CONTROL}
+            />
+          </Field>
+        </div>
 
-        <Field id="interCollegePlace" label="College town / city" error={errors.interCollegePlace}>
-          <Input
-            {...fieldProps("interCollegePlace")}
-            onChange={(e) => set("interCollegePlace")(e.target.value)}
-            placeholder="e.g. Kurnool"
-            className={CONTROL}
-          />
-        </Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field id="interCollegePlace" label="College town / city" error={errors.interCollegePlace}>
+            <Input
+              {...fieldProps("interCollegePlace")}
+              onChange={(e) => set("interCollegePlace")(e.target.value)}
+              placeholder="e.g. Kurnool"
+              className={CONTROL}
+            />
+          </Field>
 
-        <Field
-          id="appNumber"
-          label="Entrance exam / allotment number"
-          error={errors.appNumber}
-          hint="KCET, JEE Main, COMEDK or CET application number"
-        >
-          <Input
-            {...fieldProps("appNumber")}
-            onChange={(e) => set("appNumber")(e.target.value)}
-            placeholder="e.g. 2026012345"
-            className={`${CONTROL} font-mono uppercase tracking-wide`}
-          />
-        </Field>
+          <Field
+            id="appNumber"
+            label="Entrance exam / allotment number"
+            error={errors.appNumber}
+            hint="KCET, JEE Main, COMEDK or CET application number"
+          >
+            <Input
+              {...fieldProps("appNumber")}
+              onChange={(e) => set("appNumber")(e.target.value)}
+              placeholder="e.g. 2026012345"
+              className={`${CONTROL} font-mono uppercase tracking-wide`}
+            />
+          </Field>
+        </div>
 
         <Field id="homeTownAddress" label="Home town address" error={errors.homeTownAddress}>
           <Textarea
