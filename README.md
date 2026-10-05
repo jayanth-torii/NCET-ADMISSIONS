@@ -280,9 +280,53 @@ Base URL `http://localhost:4005`
 
 `status` moves through `new → contacted → shortlisted → enrolled → closed`.
 
+Everything except `/api/health`, `POST /api/applications`, the `/counselors`
+reads and the digest trigger requires a developer token.
+
 > ⚠️ `POST /api/jobs/weekly-digest` is intentionally unauthenticated so a cron
 > can reach it. Put it behind a scheduler secret or shared token before
 > exposing the API publicly.
+
+---
+
+## 🔐 Developer admin panel
+
+A private `/admin` page for reviewing applications. **Not linked from the public
+site** — reach it by typing the path.
+
+| Method | Path | Purpose |
+|---|---|---|
+| `POST` | `/api/admin/login` | Step 1 — email + password → OTP challenge |
+| `POST` | `/api/admin/verify` | Step 2 — OTP → session token |
+| `GET` | `/api/admin/me` | Validate a stored token |
+| `GET` | `/api/admin/stats` | Pipeline counts for the cards |
+| `GET` | `/api/admin/applications?status=&limit=` | Applicant table |
+| `PATCH` | `/api/admin/applications/:id/status` | Move an applicant |
+
+Sign-in is two steps so a leaked password alone is not enough: the password
+returns a short-lived **challenge**, and only the OTP exchanges it for an
+8-hour token (kept in `localStorage`, sent as `Authorization: Bearer`).
+
+Every admin endpoint is gated by that token, and five failed attempts from one
+IP locks it out for ten minutes.
+
+Configure in `api/.env`:
+
+| Variable | Purpose |
+|---|---|
+| `ADMIN_EMAIL` | The single allowed account |
+| `ADMIN_PASSWORD_HASH` | bcrypt hash — never the plaintext |
+| `ADMIN_OTP` | Second factor |
+| `ADMIN_JWT_SECRET` | Signs both the challenge and the session |
+
+```bash
+# generate a hash
+node -e "console.log(require('bcryptjs').hashSync('your-password', 10))"
+```
+
+> ⚠️ The committed defaults are development placeholders. Because this repo is
+> public, set all four values in the Render dashboard before pointing the panel
+> at real applicant data.
 
 ---
 
@@ -384,6 +428,10 @@ fill in every `sync: false` variable it lists.
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` / `SMTP_FROM` | api | mail provider credentials |
 | `DIGEST_TRANSPORT` | api | `auto` |
 | `DASHBOARD_URL` | api | `https://<web>.onrender.com/` |
+| `ADMIN_EMAIL` | api | the one allowed developer account |
+| `ADMIN_PASSWORD_HASH` | api | bcrypt hash of the admin password |
+| `ADMIN_OTP` | api | the OTP second factor |
+| `ADMIN_JWT_SECRET` | api | long random string — `openssl rand -hex 32` |
 
 > ⚠️ **After the first deploy, redeploy the web service.** `NEXT_PUBLIC_API_URL` is
 > inlined at build time, so the API URL must be baked into the bundle.

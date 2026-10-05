@@ -8,8 +8,9 @@
 #
 # Set the secret values once in the Render dashboard (or via `render env`),
 # then every redeploy picks them up:
-#   MONGODB_URI, API_CORS_ORIGIN, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS,
-#   SMTP_FROM, DIGEST_TRANSPORT, DASHBOARD_URL
+#   MONGODB_URI, CORS_ORIGIN, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS,
+#   SMTP_FROM, DIGEST_TRANSPORT, DASHBOARD_URL, ADMIN_EMAIL,
+#   ADMIN_PASSWORD_HASH, ADMIN_OTP
 
 services:
   # ------------------------------------------------------------------ web
@@ -51,6 +52,23 @@ services:
         sync: false
       - key: CORS_ORIGIN
         sync: false
+      # Developer admin panel — every value is read by api/src/config/admin.js.
+      # The code falls back to development defaults, so set these before using
+      # the panel against real applicant data.
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: ADMIN_OTP
+        sync: false
+      - key: ADMIN_JWT_SECRET
+        generateValue: true
+      - key: ADMIN_JWT_EXPIRES_IN
+        value: "8h"
+      - key: ADMIN_MAX_ATTEMPTS
+        value: "5"
+      - key: ADMIN_ATTEMPT_WINDOW_MS
+        value: "600000"
       # Weekly digest — SMTP is the transport that can attach the workbook.
       - key: SMTP_HOST
         sync: false
@@ -66,6 +84,10 @@ services:
         sync: false
       - key: DIGEST_TRANSPORT
         value: auto
+      # Optional: redirect the weekly report to a test inbox. Leave blank to
+      # send to the counsellor's own address in the database.
+      - key: DIGEST_TO
+        sync: false
       - key: DASHBOARD_URL
         sync: false
       # EmailJS fallback (cannot attach files).
