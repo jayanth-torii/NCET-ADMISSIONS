@@ -13,6 +13,7 @@ let assert;
 const VALID = {
   studentName: "Anitha Sharma",
   studentMobile: "9876543210",
+  studentWhatsApp: "9876543211",
   gender: "female",
   fatherName: "Ramesh Sharma",
   fatherMobile: "9123456780",
@@ -56,6 +57,10 @@ describe("POST /api/applications", () => {
     assert.equal(res.status, 201);
     assert.equal(res.body.success, true);
     assert.equal(res.body.application.studentName, VALID.studentName);
+    // The 201 response is a minimal ack; verify the new field via the stored doc.
+    const Application = require("../src/models/application.model");
+    const stored = await Application.findById(res.body.application.id);
+    assert.equal(stored.studentWhatsApp, VALID.studentWhatsApp);
     // "kcet 2026 12345" -> normalised to "KCET 2026 12345"
     assert.equal(res.body.application.appNumber, "KCET 2026 12345");
     assert.equal(res.body.application.status, "new");
@@ -94,6 +99,13 @@ describe("POST /api/applications", () => {
 
     assert.equal(res.status, 422);
     assert.ok(res.body.errors.some((e) => e.field === "fatherMobile"));
+  });
+
+  it("rejects an invalid WhatsApp number", async () => {
+    const res = await request(app).post("/api/applications").send({ ...VALID, studentWhatsApp: "12345" });
+
+    assert.equal(res.status, 422);
+    assert.ok(res.body.errors.some((e) => e.field === "studentWhatsApp"));
   });
 
   it("rejects an unknown gender value", async () => {

@@ -11,6 +11,7 @@ const APPLICATIONS = [
   {
     studentName: "Anitha Sharma",
     studentMobile: "9876543210",
+    studentWhatsApp: "9876543211",
     gender: "female",
     fatherName: "Ramesh Sharma",
     fatherMobile: "9123456780",
@@ -24,6 +25,7 @@ const APPLICATIONS = [
   {
     studentName: "Rahul Krishna",
     studentMobile: "9812345678",
+    studentWhatsApp: "9812345679",
     gender: "male",
     fatherName: "Krishna Reddy",
     fatherMobile: "9008007000",
@@ -90,7 +92,7 @@ describe("workbook builder", () => {
     COLUMNS.forEach((c, i) => (byHeader[c.key] = first.getCell(i + 1).value));
 
     for (const key of [
-      "studentName", "studentMobile", "gender", "fatherName", "fatherMobile",
+      "studentName", "studentMobile", "studentWhatsApp", "gender", "fatherName", "fatherMobile",
       "interCollegeName", "interCollegePlace", "appNumber", "homeTownAddress",
     ]) {
       assert.equal(
@@ -110,11 +112,18 @@ describe("workbook builder", () => {
     const wb = await readBack(buffer);
     const sheet = wb.getWorksheet("Applications");
 
-    const mobile = sheet.getRow(4).getCell(2).value;
-    assert.equal(mobile, "09876543210", "leading zero was lost");
-    assert.equal(sheet.getRow(4).getCell(2).numFmt, "@");
+    // Derive column positions from COLUMNS so inserting columns cannot break this.
+    const colOf = (key) => COLUMNS.findIndex((c) => c.key === key) + 1;
 
-    const appNo = sheet.getRow(4).getCell(8).value;
+    const mobile = sheet.getRow(4).getCell(colOf("studentMobile")).value;
+    assert.equal(mobile, "09876543210", "leading zero was lost");
+    assert.equal(sheet.getRow(4).getCell(colOf("studentMobile")).numFmt, "@");
+
+    const whatsapp = sheet.getRow(4).getCell(colOf("studentWhatsApp")).value;
+    assert.equal(whatsapp, "9876543211");
+    assert.equal(sheet.getRow(4).getCell(colOf("studentWhatsApp")).numFmt, "@");
+
+    const appNo = sheet.getRow(4).getCell(colOf("appNumber")).value;
     assert.equal(appNo, "007");
   });
 

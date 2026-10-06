@@ -45,6 +45,7 @@ async function getAdminToken() {
 const APPLICANT = {
   studentName: "Anitha Sharma",
   studentMobile: "9876543210",
+  studentWhatsApp: "9876500011",
   fatherName: "Ramesh Sharma",
   fatherMobile: "9123456780",
   interCollegeName: "Sri Chaitanya Junior College",
@@ -71,12 +72,13 @@ const check = (name, passed, detail = "") => {
 
   check("page loads", (await page.title()).includes("NGI Admissions"), await page.title());
 
-  // --- All nine form fields are present and labelled ---
+  // --- All ten form fields are present and labelled ---
   // Addressed by input name rather than label text: marketing copy rewords
   // labels often, but the names are what the API contract depends on.
   const FIELDS = [
     ["studentName", "Student name"],
     ["studentMobile", "Student mobile"],
+    ["studentWhatsApp", "Student WhatsApp number"],
     ["fatherName", "Father / guardian name"],
     ["fatherMobile", "Father / guardian mobile"],
     ["interCollegeName", "Inter college name"],
@@ -116,6 +118,7 @@ const check = (name, passed, detail = "") => {
   // --- Fill the form properly ---
   await page.locator('[name="studentName"]').fill(APPLICANT.studentName);
   await page.locator('[name="studentMobile"]').fill(APPLICANT.studentMobile);
+  await page.locator('[name="studentWhatsApp"]').fill(APPLICANT.studentWhatsApp);
   await page.getByLabel(/^Gender/).click();
   await page.getByRole("option", { name: "Female" }).click();
   await page.locator('[name="fatherName"]').fill(APPLICANT.fatherName);
@@ -142,6 +145,11 @@ const check = (name, passed, detail = "") => {
   if (stored) {
     check("student name stored", stored.studentName === APPLICANT.studentName, stored.studentName);
     check("gender stored", stored.gender === "female", stored.gender);
+    check(
+      "student WhatsApp stored",
+      stored.studentWhatsApp === APPLICANT.studentWhatsApp,
+      stored.studentWhatsApp
+    );
     check("father name stored", stored.fatherName === APPLICANT.fatherName, stored.fatherName);
     check(
       "inter college stored",

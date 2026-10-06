@@ -28,6 +28,7 @@ type Application = {
   _id: string;
   studentName: string;
   studentMobile: string;
+  studentWhatsApp: string;
   gender: string;
   fatherName: string;
   fatherMobile: string;
@@ -136,7 +137,7 @@ export function Dashboard() {
     const q = search.trim().toLowerCase();
     if (!q) return rows;
     return rows.filter((r) =>
-      [r.studentName, r.appNumber, r.studentMobile, r.interCollegeName, r.interCollegePlace]
+      [r.studentName, r.appNumber, r.studentMobile, r.studentWhatsApp, r.interCollegeName, r.interCollegePlace]
         .join(" ")
         .toLowerCase()
         .includes(q)
@@ -170,7 +171,7 @@ export function Dashboard() {
 
   const exportCsv = () => {
     const headers = [
-      "Student Name", "Student Mobile", "Gender", "Father", "Father Mobile",
+      "Student Name", "Student Mobile", "Student WhatsApp", "Gender", "Father", "Father Mobile",
       "Inter College", "Place", "App Number", "Home Town", "Status", "Submitted",
     ];
     const escape = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
@@ -179,7 +180,7 @@ export function Dashboard() {
       headers.join(","),
       ...filtered.map((r) =>
         [
-          r.studentName, r.studentMobile, r.gender, r.fatherName, r.fatherMobile,
+          r.studentName, r.studentMobile, r.studentWhatsApp, r.gender, r.fatherName, r.fatherMobile,
           r.interCollegeName, r.interCollegePlace, r.appNumber, r.homeTownAddress,
           r.status, new Date(r.createdAt).toISOString(),
         ].map(escape).join(",")
@@ -340,6 +341,14 @@ export function Dashboard() {
                       >
                         <Phone className="size-3.5" aria-hidden="true" />
                         {r.studentMobile}
+                      </a>
+                      <a
+                        href={`https://wa.me/91${r.studentWhatsApp}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-0.5 flex items-center gap-1.5 text-xs text-emerald-700 hover:underline"
+                      >
+                        WhatsApp · {r.studentWhatsApp}
                       </a>
                       <p className="mt-0.5 text-xs text-muted-foreground">
                         {r.fatherName} · {r.fatherMobile}

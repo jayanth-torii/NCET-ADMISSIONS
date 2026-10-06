@@ -5,6 +5,7 @@ const Application = require("../models/application.model");
 const ALLOWED_FIELDS = [
   "studentName",
   "studentMobile",
+  "studentWhatsApp",
   "gender",
   "fatherName",
   "fatherMobile",

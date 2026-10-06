@@ -17,6 +17,12 @@ const ApplicationSchema = new mongoose.Schema(
       trim: true,
       match: /^[6-9]\d{9}$/,
     },
+    studentWhatsApp: {
+      type: String,
+      required: true,
+      trim: true,
+      match: /^[6-9]\d{9}$/,
+    },
     gender: { type: String, required: true, enum: GENDERS },
 
     // --- Parent / Guardian ---

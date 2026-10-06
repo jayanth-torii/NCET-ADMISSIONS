@@ -23,6 +23,7 @@ const mobile = (field) =>
 const applicationRules = () => [
   trim("studentName").isLength({ min: 2, max: 120 }).withMessage("Student name looks too short"),
   mobile("studentMobile"),
+  mobile("studentWhatsApp"),
   body("gender")
     .trim()
     .notEmpty()

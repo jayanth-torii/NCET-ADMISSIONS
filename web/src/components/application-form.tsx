@@ -20,6 +20,7 @@ import { API_URL } from "@/lib/fetcher";
 type FormValues = {
   studentName: string;
   studentMobile: string;
+  studentWhatsApp: string;
   gender: string;
   fatherName: string;
   fatherMobile: string;
@@ -34,6 +35,7 @@ type FormErrors = Partial<Record<keyof FormValues, string>>;
 const INITIAL: FormValues = {
   studentName: "",
   studentMobile: "",
+  studentWhatsApp: "",
   gender: "",
   fatherName: "",
   fatherMobile: "",
@@ -52,6 +54,8 @@ function validate(values: FormValues): FormErrors {
   if (values.studentName.trim().length < 2) errors.studentName = "Enter the student's full name";
   if (!MOBILE_RE.test(values.studentMobile.trim()))
     errors.studentMobile = "Enter a valid 10-digit mobile number";
+  if (!MOBILE_RE.test(values.studentWhatsApp.trim()))
+    errors.studentWhatsApp = "Enter a valid 10-digit WhatsApp number";
   if (!values.gender) errors.gender = "Select gender";
   if (values.fatherName.trim().length < 2) errors.fatherName = "Enter father's / guardian's name";
   if (!MOBILE_RE.test(values.fatherMobile.trim()))
@@ -224,7 +228,7 @@ export function ApplicationForm() {
           Admission enquiry
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Nine quick details and your counsellor will call you.
+          Ten quick details and your counsellor will call you.
         </p>
       </div>
 
@@ -278,6 +282,25 @@ export function ApplicationForm() {
                 <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
+          </Field>
+        </div>
+
+        <div>
+          <Field
+            id="studentWhatsApp"
+            label="Student WhatsApp number"
+            error={errors.studentWhatsApp}
+          >
+            <Input
+              {...fieldProps("studentWhatsApp")}
+              onChange={(e) =>
+                set("studentWhatsApp")(e.target.value.replace(/\D/g, "").slice(0, 10))
+              }
+              placeholder="10-digit WhatsApp number"
+              inputMode="numeric"
+              autoComplete="tel"
+              className={CONTROL}
+            />
           </Field>
         </div>
 

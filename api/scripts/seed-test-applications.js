@@ -30,6 +30,7 @@ const SAMPLES = [
   {
     studentName: "Anitha Sharma",
     studentMobile: "9876543210",
+    studentWhatsApp: "9876543211",
     gender: "female",
     fatherName: "Ramesh Sharma",
     fatherMobile: "9123456780",
@@ -41,6 +42,7 @@ const SAMPLES = [
   {
     studentName: "Rahul Krishna",
     studentMobile: "9812345678",
+    studentWhatsApp: "9812345679",
     gender: "male",
     fatherName: "Krishna Reddy",
     fatherMobile: "9008007000",
@@ -52,6 +54,7 @@ const SAMPLES = [
   {
     studentName: "Sneha Priya",
     studentMobile: "9700112233",
+    studentWhatsApp: "9700112234",
     gender: "female",
     fatherName: "Suresh Babu",
     fatherMobile: "9445566778",
@@ -63,6 +66,7 @@ const SAMPLES = [
   {
     studentName: "Mohammed Irfan",
     studentMobile: "9632587410",
+    studentWhatsApp: "9632587411",
     gender: "male",
     fatherName: "Abdul Rahman",
     fatherMobile: "9848012345",

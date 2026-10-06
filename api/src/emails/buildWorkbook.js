@@ -7,6 +7,7 @@ const EMBER = "FFF6872A";
 const COLUMNS = [
   { header: "Student Name", key: "studentName", width: 24 },
   { header: "Student Mobile", key: "studentMobile", width: 16 },
+  { header: "Student WhatsApp", key: "studentWhatsApp", width: 16 },
   { header: "Gender", key: "gender", width: 10 },
   { header: "Father / Guardian", key: "fatherName", width: 22 },
   { header: "Father Mobile", key: "fatherMobile", width: 16 },
@@ -17,6 +18,9 @@ const COLUMNS = [
   { header: "Submitted On", key: "createdAt", width: 18 },
   { header: "Status", key: "status", width: 12 },
 ];
+
+// 1-based index of the address column, used to wrap that cell only.
+const ADDRESS_COL = COLUMNS.findIndex((c) => c.key === "homeTownAddress") + 1;
 
 const fmtDate = (value) =>
   value
@@ -46,14 +50,14 @@ async function buildWorkbook(applications = [], meta = {}) {
   });
 
   // --- Title rows ---
-  sheet.mergeCells("A1:K1");
+  sheet.mergeCells(1, 1, 1, COLUMNS.length);
   const title = sheet.getCell("A1");
   title.value = "Nagarjuna Group of Institutions — Weekly Admissions Report";
   title.font = { bold: true, size: 15, color: { argb: NAVY } };
   title.alignment = { vertical: "middle" };
   sheet.getRow(1).height = 26;
 
-  sheet.mergeCells("A2:K2");
+  sheet.mergeCells(2, 1, 2, COLUMNS.length);
   const sub = sheet.getCell("A2");
   sub.value = `Week ending ${meta.weekEnding || ""} · ${meta.region || ""} desk · ${
     applications.length
@@ -80,6 +84,7 @@ async function buildWorkbook(applications = [], meta = {}) {
     const row = sheet.addRow({
       studentName: app.studentName,
       studentMobile: app.studentMobile,
+      studentWhatsApp: app.studentWhatsApp,
       gender: app.gender,
       fatherName: app.fatherName,
       fatherMobile: app.fatherMobile,
@@ -93,12 +98,13 @@ async function buildWorkbook(applications = [], meta = {}) {
 
     // Zebra striping, and keep text as text so leading zeros survive.
     row.eachCell((cell, col) => {
-      cell.alignment = { vertical: "top", wrapText: col === 9 };
+      cell.alignment = { vertical: "top", wrapText: col === ADDRESS_COL };
       if (i % 2 === 1) {
         cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF2F5FA" } };
       }
     });
     row.getCell("studentMobile").numFmt = "@";
+    row.getCell("studentWhatsApp").numFmt = "@";
     row.getCell("fatherMobile").numFmt = "@";
     row.getCell("appNumber").numFmt = "@";
   });

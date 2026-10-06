@@ -54,7 +54,7 @@ state under `prefers-reduced-motion`.
 
 **🛡️ Validated twice**
 
-The nine-field admission form is checked in the browser for instant feedback
+The ten-field admission form is checked in the browser for instant feedback
 and again on the server, which is the authority. The client can never bypass it.
 Only whitelisted fields are persisted.
 
@@ -155,6 +155,7 @@ Field set exactly as agreed for the 2026 intake:
 |---|---|---|
 | Student name | `studentName` | 2–120 chars |
 | Student mobile | `studentMobile` | 10 digits, starts 6–9 |
+| Student WhatsApp number | `studentWhatsApp` | 10 digits, starts 6–9 |
 | Gender | `gender` | `male` / `female` / `other` |
 | Father / guardian name | `fatherName` | 2–120 chars |
 | Father / guardian mobile | `fatherMobile` | 10 digits, starts 6–9 |
@@ -169,6 +170,7 @@ curl -X POST http://localhost:4005/api/applications \
   -d '{
     "studentName": "Anitha Sharma",
     "studentMobile": "9876543210",
+    "studentWhatsApp": "9876543211",
     "gender": "female",
     "fatherName": "Ramesh Sharma",
     "fatherMobile": "9123456780",

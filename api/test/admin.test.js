@@ -18,6 +18,7 @@ const HASH = "$2b$10$mDyHRartBeVDjSuj0dHgNudTUZDtfyTtk3iMTtyMSZEN.RyjaBZem";
 const VALID = {
   studentName: "Anitha Sharma",
   studentMobile: "9876543210",
+  studentWhatsApp: "9876543211",
   gender: "female",
   fatherName: "Ramesh Sharma",
   fatherMobile: "9123456780",
