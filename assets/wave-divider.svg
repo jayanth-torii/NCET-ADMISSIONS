@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="90" viewBox="0 0 1440 90" role="img" aria-label="Animated wave divider in NCET navy">
+  <title>Wave divider</title>
+  <desc>Two parallax waves in NCET navy shades drifting horizontally in a seamless loop.</desc>
+  <style>
+    .back{animation:drift 14s linear infinite}
+    .front{animation:drift 9s linear infinite}
+    @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-360px)}}
+    @media (prefers-reduced-motion: reduce){.back,.front{animation:none}}
+  </style>
+  <path class="back" fill="#132547" opacity=".45" d="M-360 34 Q-270 12 -180 34 T0 34 T180 34 T360 34 T540 34 T720 34 T900 34 T1080 34 T1260 34 T1440 34 T1620 34 T1800 34 V90 H-360 Z"/>
+  <path class="front" fill="#0a1f44" opacity=".92" d="M-360 52 Q-270 28 -180 52 T0 52 T180 52 T360 52 T540 52 T720 52 T900 52 T1080 52 T1260 52 T1440 52 T1620 52 T1800 52 V90 H-360 Z"/>
+</svg>

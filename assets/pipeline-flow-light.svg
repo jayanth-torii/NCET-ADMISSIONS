@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="250" viewBox="0 0 1000 250" role="img" aria-labelledby="pTitle pDesc">
+  <title id="pTitle">The journey of an application</title>
+  <desc id="pDesc">A student enquiry flows through the form, the Express API, MongoDB Atlas, a weekly Excel workbook, and ends with a counsellor call. Ember dots travel along the connectors.</desc>
+  <defs>
+    <linearGradient id="emberText" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fb923c"/>
+      <stop offset=".5" stop-color="#f6872a"/>
+      <stop offset="1" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <style>
+    .flow{opacity:0;animation:flow 1.8s linear infinite}
+    .flow.d2{animation-delay:.22s}
+    .flow.d3{animation-delay:.44s}
+    .flow.d4{animation-delay:.66s}
+    .flow.d5{animation-delay:.88s}
+    @keyframes flow{
+      0%{transform:translateX(0);opacity:0}
+      18%{opacity:1}
+      82%{opacity:1}
+      100%{transform:translateX(31px);opacity:0}
+    }
+    @media (prefers-reduced-motion: reduce){.flow{animation:none}}
+  </style>
+
+  <text x="500" y="40" text-anchor="middle" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="5" fill="#2b4478">THE JOURNEY OF AN APPLICATION</text>
+  <rect x="468" y="52" width="64" height="3" rx="1.5" fill="url(#emberText)"/>
+
+  <!-- connectors -->
+  <g stroke="#c3d1e7" stroke-width="2">
+    <line x1="148" y1="128" x2="179" y2="128"/>
+    <line x1="317" y1="128" x2="348" y2="128"/>
+    <line x1="486" y1="128" x2="517" y2="128"/>
+    <line x1="655" y1="128" x2="686" y2="128"/>
+    <line x1="824" y1="128" x2="855" y2="128"/>
+  </g>
+
+  <!-- travelling dots -->
+  <g fill="#f6872a">
+    <circle class="flow" cx="148" cy="128" r="4.5"/>
+    <circle class="flow d2" cx="317" cy="128" r="4.5"/>
+    <circle class="flow d3" cx="486" cy="128" r="4.5"/>
+    <circle class="flow d4" cx="655" cy="128" r="4.5"/>
+    <circle class="flow d5" cx="824" cy="128" r="4.5"/>
+  </g>
+
+  <!-- nodes -->
+  <g font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" text-anchor="middle">
+    <g>
+      <rect x="10" y="92" width="138" height="72" rx="14" fill="#ffffff" stroke="#c3d1e7" stroke-width="1.5"/>
+      <text x="79" y="114" font-size="10" font-weight="600" letter-spacing="2" fill="#5f7db0">STEP 01</text>
+      <text x="79" y="136" font-size="13.5" font-weight="700" fill="#0a1f44">Student</text>
+      <text x="79" y="153" font-size="10.5" fill="#2b4478">AP admissions desk</text>
+    </g>
+    <g>
+      <rect x="179" y="92" width="138" height="72" rx="14" fill="#ffffff" stroke="#c3d1e7" stroke-width="1.5"/>
+      <text x="248" y="114" font-size="10" font-weight="600" letter-spacing="2" fill="#5f7db0">STEP 02</text>
+      <text x="248" y="136" font-size="13.5" font-weight="700" fill="#0a1f44">Enquiry form</text>
+      <text x="248" y="153" font-size="10.5" fill="#2b4478">validated twice</text>
+    </g>
+    <g>
+      <rect x="348" y="92" width="138" height="72" rx="14" fill="#ffffff" stroke="#c3d1e7" stroke-width="1.5"/>
+      <text x="417" y="114" font-size="10" font-weight="600" letter-spacing="2" fill="#5f7db0">STEP 03</text>
+      <text x="417" y="136" font-size="13.5" font-weight="700" fill="#0a1f44">Express API</text>
+      <text x="417" y="153" font-size="10.5" fill="#2b4478">allow-listed fields</text>
+    </g>
+    <g>
+      <rect x="517" y="92" width="138" height="72" rx="14" fill="#ffffff" stroke="#c3d1e7" stroke-width="1.5"/>
+      <text x="586" y="114" font-size="10" font-weight="600" letter-spacing="2" fill="#5f7db0">STEP 04</text>
+      <text x="586" y="136" font-size="13.5" font-weight="700" fill="#0a1f44">MongoDB Atlas</text>
+      <text x="586" y="153" font-size="10.5" fill="#2b4478">persisted to Atlas</text>
+    </g>
+    <g>
+      <rect x="686" y="92" width="138" height="72" rx="14" fill="#ffffff" stroke="#c3d1e7" stroke-width="1.5"/>
+      <text x="755" y="114" font-size="10" font-weight="600" letter-spacing="2" fill="#5f7db0">STEP 05</text>
+      <text x="755" y="136" font-size="13.5" font-weight="700" fill="#0a1f44">Weekly .xlsx</text>
+      <text x="755" y="153" font-size="10.5" fill="#2b4478">2-sheet workbook</text>
+    </g>
+    <g>
+      <rect x="855" y="92" width="138" height="72" rx="14" fill="#ffffff" stroke="#c3d1e7" stroke-width="1.5"/>
+      <text x="924" y="114" font-size="10" font-weight="600" letter-spacing="2" fill="#5f7db0">STEP 06</text>
+      <text x="924" y="136" font-size="13.5" font-weight="700" fill="#0a1f44">Counsellor call</text>
+      <text x="924" y="153" font-size="10.5" fill="#2b4478">within one day</text>
+    </g>
+  </g>
+
+  <text x="500" y="222" text-anchor="middle" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="12.5" fill="#5f7db0">Client validation for speed · server validation is the authority · a styled Excel lands on the desk every Saturday</text>
+</svg>

@@ -1,28 +1,40 @@
 <div align="center">
 
-<img src="web/public/ngi-logo.png" alt="NGI Logo" width="96" />
-
-# NGI Admissions
-
-### Admission landing page for the Nagarjuna Group of Institutions
+<!-- Animated banner — an XML/SVG document with drifting aurora, rising particles
+     and a shimmer sweep across the title. Lives at assets/banner.svg. -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/banner.svg" />
+  <img src="assets/banner.svg" alt="NGI Admissions 2026–27 — Nagarjuna Group of Institutions" width="100%" />
+</picture>
 
 **Next.js 16** · **TypeScript** · **Tailwind CSS v4** · **shadcn/ui** · **Express** · **MongoDB**
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com)
-[![Express](https://img.shields.io/badge/Express-4-000000?style=for-the-badge&logo=express)](https://expressjs.com)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com)
-
----
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Admissions-2026%E2%80%9327-F6872A?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/NAAC-A%2B-0A1F44?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Autonomous-VTU-0A1F44?style=for-the-badge" />
+<p>
+  <img src="https://img.shields.io/badge/Admissions-2026%E2%80%9327-F6872A?style=for-the-badge" alt="Admissions 2026–27" />
+  <img src="https://img.shields.io/badge/NAAC-A%2B-0A1F44?style=for-the-badge" alt="NAAC A+" />
+  <img src="https://img.shields.io/badge/Autonomous-VTU-0A1F44?style=for-the-badge" alt="Autonomous under VTU" />
+  <img src="https://img.shields.io/badge/automated%20checks-101-2ea44f?style=for-the-badge" alt="101 automated checks" />
 </p>
 
-<br>
+<p>
+  <a href="#-highlights">Highlights</a> ·
+  <a href="#-the-journey-of-an-application">Flow</a> ·
+  <a href="#-quick-start">Quick start</a> ·
+  <a href="#-the-admission-form">The form</a> ·
+  <a href="#-weekly-admissions-report">Weekly report</a> ·
+  <a href="#-api">API</a> ·
+  <a href="#-developer-admin-panel">Admin</a> ·
+  <a href="#-testing">Testing</a> ·
+  <a href="#-deploying-to-render">Deploy</a>
+</p>
+
+</div>
+
+<div align="center">
+  <img src="assets/wave-divider.svg" alt="" width="100%" />
+</div>
+
+<div align="center">
 
 ## ✨ Highlights
 
@@ -71,7 +83,26 @@ click-to-call phone numbers in the body.
 </tr>
 </table>
 
----
+**Verified accreditation** — the same ten marks that scroll across the landing
+page, rebuilt as an animated SVG ticker:
+
+<img src="assets/accreditation-ticker.svg" alt="Scrolling accreditation ticker: NAAC A+ (Cycle II) · NBA Accredited — CSE &amp; ECE · ISO 9001:2015 · ISO 14001:2015 · ISO 22000 · UGC Recognised · NIRF Ranked · MoE Innovation Council · Autonomous under VTU to 2031–32 · AICTE Approved · IDEA Lab" width="100%" />
+
+## 🔄 The journey of an application
+
+Every enquiry travels the same six-step path — animated here exactly as the
+stack implements it:
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/pipeline-flow-dark.svg" />
+  <img src="assets/pipeline-flow-light.svg" alt="Pipeline: Student → Enquiry form (validated twice) → Express API (allow-listed) → MongoDB Atlas → Weekly .xlsx → Counsellor call" width="100%" />
+</picture>
+
+</div>
+
+<div align="center">
+  <img src="assets/wave-divider.svg" alt="" width="100%" />
+</div>
 
 ## 📸 Sections
 
@@ -82,9 +113,7 @@ click-to-call phone numbers in the body.
 | **Programmes** — infinite 3D card carousel, UG / PG | **Learning ecosystem** — library, labs, innovation spaces |
 | **Admission process** — five clear stages | |
 
----
-
-## 🏛️ About the group
+## 🎓 About the group
 
 The **Nagarjuna Group of Institutions** unites six units under the Nagarjuna
 Education Society, Yelahanka, Bengaluru:
@@ -101,8 +130,6 @@ Education Society, Yelahanka, Bengaluru:
 > Nagarjuna"). Programme detail is attached only where it could be corroborated
 > from public sources — the rest are marked *"Programme details to be confirmed"*
 > rather than invented. Add them in `web/src/data/site.ts` as they are verified.
-
----
 
 ## 🚀 Quick start
 
@@ -145,8 +172,6 @@ MONGODB_URI=mongodb://127.0.0.1:27017/ngi_admissions npm run dev:api
 
 </details>
 
----
-
 ## 🧾 The admission form
 
 Field set exactly as agreed for the 2026 intake:
@@ -180,8 +205,6 @@ curl -X POST http://localhost:4005/api/applications \
     "homeTownAddress": "4-12-8, Gandhi Nagar, Kurnool, AP 518004"
   }'
 ```
-
----
 
 ## 📮 Weekly Admissions Report
 
@@ -251,8 +274,10 @@ DIGEST_TRANSPORT=auto     # auto | smtp | emailjs
 DASHBOARD_URL=https://your-site/
 ```
 
-**Testing against a real inbox** — `DIGEST_TO` redirects the mail without
-touching stored counsellor data:
+<details>
+<summary><b>🧪 Testing against a real inbox</b></summary>
+
+`DIGEST_TO` redirects the mail without touching stored counsellor data:
 
 ```bash
 node api/scripts/seed-test-applications.js          # sample applications
@@ -260,14 +285,14 @@ DIGEST_TO=you@example.com npm --prefix api run digest
 node api/scripts/preview-digest.js                  # render only, send nothing
 ```
 
+</details>
+
 GitHub Actions is wired at `api/.github/workflows/weekly-digest.yml`
 (`cron: "30 3 * * 6"` = Saturday 09:00 IST).
 
----
-
 ## 🔌 API
 
-Base URL `http://localhost:4005`
+Base URL <kbd>http://localhost:4005</kbd>
 
 | Method | Path | Purpose |
 |---|---|---|
@@ -288,8 +313,6 @@ reads and the digest trigger requires a developer token.
 > ⚠️ `POST /api/jobs/weekly-digest` is intentionally unauthenticated so a cron
 > can reach it. Put it behind a scheduler secret or shared token before
 > exposing the API publicly.
-
----
 
 ## 🔐 Developer admin panel
 
@@ -330,8 +353,6 @@ node -e "console.log(require('bcryptjs').hashSync('your-password', 10))"
 > public, set all four values in the Render dashboard before pointing the panel
 > at real applicant data.
 
----
-
 ## 📁 Structure
 
 ```
@@ -360,10 +381,10 @@ ngi-admissions-ap/
 │       ├── data/site.ts      ← every word and number lives here
 │       └── lib/
 │
+├── assets/                   animated SVG artwork (XML) — banner · waves ·
+│                             pipeline · ticker · footer glow
 └── scripts/                  e2e.js · admin-e2e.js · style-audit.js
 ```
-
----
 
 ## 🧪 Testing
 
@@ -379,8 +400,6 @@ npm run test:style   # 10 computed-style / theme / a11y checks
 | `test:e2e` | Real browser: field discovery, client validation, successful submit, **row present in MongoDB**, counsellor card from the API, logo load, Product Sans actually loaded, mobile nav, no page errors |
 | `test:style` | Brand colours applied, keyframes compiled, no horizontal overflow at 1280/768/390 px, heading order, tap-target size |
 
----
-
 ## ♿ Accessibility
 
 - Scroll-triggered animations collapse to their final state under
@@ -395,10 +414,10 @@ npm run test:style   # 10 computed-style / theme / a11y checks
   open-in-new-tab all behave correctly.
 - The landing page prerenders as static content; only the counsellor card and
   the form hydrate on the client.
+- Even this README follows suit: every animated SVG in `assets/` freezes under
+  `prefers-reduced-motion`.
 
----
-
-## ✏️ Editing content
+## 📝 Editing content
 
 Nearly every word and number lives in **`web/src/data/site.ts`** — stats,
 programmes, process steps, campus highlights, FAQs and institutions. The
@@ -407,9 +426,11 @@ fallback in `fallbackCounselor` used only if the API is unreachable.
 
 Brand tokens live at the top of `web/src/app/globals.css`.
 
----
+The animated artwork in **`assets/*.svg`** is plain XML — open any file and
+edit text, colours or keyframes directly. Every asset is locked to the brand
+palette (navy `#0A1F44`, ember `#F6872A`) and honours `prefers-reduced-motion`.
 
-## ☁️ Deploying to Render
+## 🌐 Deploying to Render
 
 The repo ships a [`render.yaml`](./render.yaml) blueprint that deploys both
 services:
@@ -439,7 +460,7 @@ fill in every `sync: false` variable it lists.
 > inlined at build time, so the API URL must be baked into the bundle.
 
 <details>
-<summary><b>Deploying the web app only</b></summary>
+<summary><b>📦 Deploying the web app only</b></summary>
 
 If you host the API elsewhere, set **Root Directory** to `web`, and either set a
 build command of `npm ci && npm run build` or leave Render's default — the
@@ -447,8 +468,6 @@ build command of `npm ci && npm run build` or leave Render's default — the
 because the root `build` script installs each workspace before building.
 
 </details>
-
----
 
 ## 📄 Sources
 
@@ -460,7 +479,18 @@ because the root `build` script installs each workspace before building.
 
 ---
 
-<p align="center">
-  <b>Nagarjuna Group of Institutions</b><br>
-  <sub>Admissions 2026–27 · NAAC A+ Accredited · Autonomous under VTU</sub>
-</p>
+<div align="center">
+  <img src="assets/wave-divider.svg" alt="" width="100%" />
+
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/footer-glow-dark.svg" />
+    <img src="assets/footer-glow-light.svg" alt="Nagarjuna Group of Institutions" width="100%" />
+  </picture>
+
+  <img src="web/public/ngi-logo.png" alt="NGI logo" width="72" />
+
+  <p>
+    <b>Nagarjuna Group of Institutions</b><br>
+    <sub>Admissions 2026–27 · NAAC A+ Accredited · Autonomous under VTU</sub>
+  </p>
+</div>

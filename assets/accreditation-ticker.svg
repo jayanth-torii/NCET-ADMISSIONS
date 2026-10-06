@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="64" viewBox="0 0 1000 64" role="img" aria-labelledby="tTitle tDesc">
+  <title id="tTitle">Accreditation ticker</title>
+  <desc id="tDesc">A navy pill with the ten NGI accreditations scrolling right to left in a seamless loop, terminated by ember dots.</desc>
+  <defs>
+    <clipPath id="pillClip">
+      <rect x="0" y="0" width="1000" height="64" rx="32"/>
+    </clipPath>
+    <linearGradient id="edgeFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000000"/>
+      <stop offset=".06" stop-color="#ffffff"/>
+      <stop offset=".94" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <mask id="fadeMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="64">
+      <rect x="0" y="0" width="1000" height="64" fill="url(#edgeFade)"/>
+    </mask>
+  </defs>
+  <style>
+    .track{animation:scroll 26s linear infinite}
+    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-1770px)}}
+    @media (prefers-reduced-motion: reduce){.track{animation:none}}
+  </style>
+
+  <rect width="1000" height="64" rx="32" fill="#0a1f44"/>
+
+  <g clip-path="url(#pillClip)">
+    <g mask="url(#fadeMask)">
+      <g class="track" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="600" fill="#dbe4f0">
+        <text x="40" y="40" textLength="1700" lengthAdjust="spacingAndGlyphs">NAAC A+ (Cycle II) · NBA Accredited — CSE &amp; ECE · ISO 9001:2015 · ISO 14001:2015 · ISO 22000 · UGC Recognised · NIRF Ranked · MoE Innovation Council · Autonomous under VTU to 2031-32 · AICTE Approved · IDEA Lab · </text>
+        <text x="1810" y="40" textLength="1700" lengthAdjust="spacingAndGlyphs">NAAC A+ (Cycle II) · NBA Accredited — CSE &amp; ECE · ISO 9001:2015 · ISO 14001:2015 · ISO 22000 · UGC Recognised · NIRF Ranked · MoE Innovation Council · Autonomous under VTU to 2031-32 · AICTE Approved · IDEA Lab · </text>
+      </g>
+    </g>
+  </g>
+
+  <circle cx="26" cy="32" r="4.5" fill="#f6872a"/>
+  <circle cx="974" cy="32" r="4.5" fill="#f6872a"/>
+</svg>
