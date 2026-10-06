@@ -55,7 +55,7 @@ services:
       # Developer admin panel — every value is read by api/src/config/admin.js.
       # The code falls back to development defaults, so set these before using
       # the panel against real applicant data.
-      - key: ADMIN_EMAIL
+      - key: ADMIN_EMAILS
         sync: false
       - key: ADMIN_PASSWORD_HASH
         sync: false

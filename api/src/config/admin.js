@@ -10,9 +10,19 @@ const bcrypt = require("bcryptjs");
  *   node -e "console.log(require('bcryptjs').hashSync('your-password', 10))"
  */
 
-const ADMIN_EMAIL = (
-  process.env.ADMIN_EMAIL || "jayanth.m@ncetmail.com"
-).toLowerCase();
+/**
+ * Admin accounts. Comma-separated in ADMIN_EMAILS; every entry signs in with
+ * the shared ADMIN_PASSWORD_HASH and ADMIN_OTP.
+ */
+const DEFAULT_EMAILS = "jayanth.m@ncetmail.com,dr.bhargava@ncetmail.com";
+
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || DEFAULT_EMAILS)
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
+// First account, kept for logs and backward-compatible imports.
+const ADMIN_EMAIL = ADMIN_EMAILS[0];
 
 // Default hash for "Admin@123" — used only when no hash is configured so the
 // panel is usable immediately. Override ADMIN_PASSWORD_HASH in .env for anything
@@ -85,6 +95,7 @@ const verifyOtp = (supplied) => {
 
 module.exports = {
   ADMIN_EMAIL,
+  ADMIN_EMAILS,
   ADMIN_OTP,
   JWT_SECRET,
   JWT_EXPIRES_IN,

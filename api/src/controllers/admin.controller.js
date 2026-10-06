@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const Application = require("../models/application.model");
 const { asyncHandler } = require("../utils/httpError");
 const {
-  ADMIN_EMAIL,
+  ADMIN_EMAILS,
   JWT_SECRET,
   JWT_EXPIRES_IN,
   verifyPassword,
@@ -48,7 +48,7 @@ const login = async (req, res) => {
   const password = String(req.body?.password || "");
 
   // Both checks always run, so a wrong email and a wrong password cost the same.
-  const emailOk = email === ADMIN_EMAIL;
+  const emailOk = ADMIN_EMAILS.includes(email);
   const passwordOk = verifyPassword(password);
 
   if (!emailOk || !passwordOk) {

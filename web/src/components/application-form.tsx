@@ -10,7 +10,10 @@ import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -22,6 +25,7 @@ type FormValues = {
   studentMobile: string;
   studentWhatsApp: string;
   gender: string;
+  interestedCourse: string;
   fatherName: string;
   fatherMobile: string;
   interCollegeName: string;
@@ -32,11 +36,34 @@ type FormValues = {
 
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
+/**
+ * One dropdown, grouped by stream — the student picks BE, UG or PG as the
+ * heading, then chooses a course under it in the same list. Course values
+ * mirror COURSES in api/src/models/application.model.js — keep both in sync.
+ */
+const COURSE_GROUPS: { label: string; courses: string[] }[] = [
+  {
+    label: "BE",
+    courses: [
+      "B.E. Computer Science & Engineering",
+      "B.E. CSE (AI & ML)",
+      "B.E. CSE (Data Science)",
+      "B.E. CSE (Cyber Security)",
+      "B.E. Information Science & Engineering",
+      "B.E. Electronics & Communication",
+      "B.E. Civil Engineering",
+    ],
+  },
+  { label: "UG", courses: ["BCA", "BBA", "B.Com"] },
+  { label: "PG", courses: ["MCA", "MBA"] },
+];
+
 const INITIAL: FormValues = {
   studentName: "",
   studentMobile: "",
   studentWhatsApp: "",
   gender: "",
+  interestedCourse: "",
   fatherName: "",
   fatherMobile: "",
   interCollegeName: "",
@@ -57,6 +84,8 @@ function validate(values: FormValues): FormErrors {
   if (!MOBILE_RE.test(values.studentWhatsApp.trim()))
     errors.studentWhatsApp = "Enter a valid 10-digit WhatsApp number";
   if (!values.gender) errors.gender = "Select gender";
+  if (!values.interestedCourse)
+    errors.interestedCourse = "Select the course you are interested in";
   if (values.fatherName.trim().length < 2) errors.fatherName = "Enter father's / guardian's name";
   if (!MOBILE_RE.test(values.fatherMobile.trim()))
     errors.fatherMobile = "Enter a valid 10-digit mobile number";
@@ -228,7 +257,7 @@ export function ApplicationForm() {
           Admission enquiry
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Ten quick details and your counsellor will call you.
+          Eleven quick details and your counsellor will call you.
         </p>
       </div>
 
@@ -250,6 +279,33 @@ export function ApplicationForm() {
             autoComplete="name"
             className={CONTROL}
           />
+        </Field>        <Field id="interestedCourse" label="Interested course" error={errors.interestedCourse}>
+          <Select value={values.interestedCourse} onValueChange={set("interestedCourse")}>
+            <SelectTrigger
+              id="interestedCourse"
+              name="interestedCourse"
+              aria-invalid={errors.interestedCourse ? true : undefined}
+              aria-describedby={errors.interestedCourse ? "interestedCourse-error" : undefined}
+              className={`w-full ${CONTROL}`}
+            >
+              <SelectValue placeholder="Select a course" />
+            </SelectTrigger>
+            <SelectContent>
+              {COURSE_GROUPS.map((group, index) => (
+                <SelectGroup key={group.label}>
+                  {index > 0 && <SelectSeparator className="-mx-1" />}
+                  <SelectLabel className="px-1.5 pt-1 pb-0.5 text-[11px] font-bold tracking-[0.14em] text-muted-foreground">
+                    {group.label}
+                  </SelectLabel>
+                  {group.courses.map((course) => (
+                    <SelectItem key={course} value={course}>
+                      {course}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
 
         <div className="grid gap-4 sm:grid-cols-2">

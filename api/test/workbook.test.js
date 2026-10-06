@@ -13,6 +13,7 @@ const APPLICATIONS = [
     studentMobile: "9876543210",
     studentWhatsApp: "9876543211",
     gender: "female",
+    interestedCourse: "B.E. Computer Science & Engineering",
     fatherName: "Ramesh Sharma",
     fatherMobile: "9123456780",
     interCollegeName: "Sri Chaitanya Junior College",
@@ -27,6 +28,7 @@ const APPLICATIONS = [
     studentMobile: "9812345678",
     studentWhatsApp: "9812345679",
     gender: "male",
+    interestedCourse: "B.E. Electronics & Communication",
     fatherName: "Krishna Reddy",
     fatherMobile: "9008007000",
     interCollegeName: "Narayana Junior College",
@@ -92,7 +94,7 @@ describe("workbook builder", () => {
     COLUMNS.forEach((c, i) => (byHeader[c.key] = first.getCell(i + 1).value));
 
     for (const key of [
-      "studentName", "studentMobile", "studentWhatsApp", "gender", "fatherName", "fatherMobile",
+      "studentName", "studentMobile", "studentWhatsApp", "gender", "interestedCourse", "fatherName", "fatherMobile",
       "interCollegeName", "interCollegePlace", "appNumber", "homeTownAddress",
     ]) {
       assert.equal(

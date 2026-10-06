@@ -9,6 +9,8 @@ const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
 process.env.MONGODB_URI = "mongodb://127.0.0.1:27017/ngi_admissions_test";
+process.env.ADMIN_EMAILS = "jayanth.m@ncetmail.com,dr.bhargava@ncetmail.com";
+// Kept for tests that sign in as the primary account.
 process.env.ADMIN_EMAIL = "jayanth.m@ncetmail.com";
 process.env.ADMIN_OTP = "000000";
 process.env.ADMIN_JWT_SECRET = "test-secret";

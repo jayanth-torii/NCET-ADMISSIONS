@@ -20,6 +20,7 @@ const VALID = {
   studentMobile: "9876543210",
   studentWhatsApp: "9876543211",
   gender: "female",
+  interestedCourse: "B.E. Computer Science & Engineering",
   fatherName: "Ramesh Sharma",
   fatherMobile: "9123456780",
   interCollegeName: "Sri Chaitanya Junior College",
@@ -88,7 +89,25 @@ describe("POST /api/admin/login", () => {
 
     assert.equal(res.status, 401);
     assert.equal(res.body.success, false);
-    assert.ok(!res.body.challenge);
+  });
+
+  it("accepts the second admin account with the same password", async () => {
+    const res = await request(app)
+      .post("/api/admin/login")
+      .send({ email: "dr.bhargava@ncetmail.com", password: PASSWORD });
+
+    assert.equal(res.status, 200);
+    assert.equal(res.body.email, "dr.bhargava@ncetmail.com");
+
+    const verify = await request(app)
+      .post("/api/admin/verify")
+      .send({
+        email: res.body.email,
+        otp: OTP,
+        challenge: res.body.challenge,
+      });
+    assert.equal(verify.status, 200);
+    assert.ok(verify.body.token, "second admin should get a session token");
   });
 
   it("rejects a wrong email without revealing which field failed", async () => {

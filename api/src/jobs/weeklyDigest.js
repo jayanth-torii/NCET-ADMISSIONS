@@ -18,7 +18,8 @@ const { sendWeeklyDigest } = require("../services/email.service");
  *   - POST /api/jobs/weekly-digest      trigger from an external cron
  */
 
-const DASHBOARD_URL = process.env.DASHBOARD_URL || "http://localhost:3000/";
+// The "Open the admissions desk" button in the weekly digest email.
+const DASHBOARD_URL = process.env.DASHBOARD_URL || "https://ap-ngi.vercel.app/";
 const TIMEZONE = "Asia/Kolkata";
 
 /** Saturday at 09:00 in the institute's timezone. */

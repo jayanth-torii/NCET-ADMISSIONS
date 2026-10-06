@@ -7,6 +7,7 @@ const ALLOWED_FIELDS = [
   "studentMobile",
   "studentWhatsApp",
   "gender",
+  "interestedCourse",
   "fatherName",
   "fatherMobile",
   "interCollegeName",

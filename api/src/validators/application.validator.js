@@ -1,4 +1,5 @@
 const { body, validationResult } = require("express-validator");
+const { COURSES } = require("../models/application.model");
 
 const trim = (field) =>
   body(field)
@@ -31,6 +32,13 @@ const applicationRules = () => [
     .bail()
     .isIn(["male", "female", "other"])
     .withMessage("Gender must be one of male, female, other"),
+  body("interestedCourse")
+    .trim()
+    .notEmpty()
+    .withMessage("Interested course is required")
+    .bail()
+    .isIn(COURSES)
+    .withMessage("Interested course must be one of the offered programmes"),
   trim("fatherName").isLength({ min: 2, max: 120 }).withMessage("Father name looks too short"),
   mobile("fatherMobile"),
   trim("interCollegeName").isLength({ min: 2, max: 180 }).withMessage("Inter college name is required"),

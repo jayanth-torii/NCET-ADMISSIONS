@@ -15,6 +15,7 @@ const VALID = {
   studentMobile: "9876543210",
   studentWhatsApp: "9876543211",
   gender: "female",
+  interestedCourse: "B.E. Computer Science & Engineering",
   fatherName: "Ramesh Sharma",
   fatherMobile: "9123456780",
   interCollegeName: "Sri Chaitanya Junior College",
@@ -99,6 +100,13 @@ describe("POST /api/applications", () => {
 
     assert.equal(res.status, 422);
     assert.ok(res.body.errors.some((e) => e.field === "fatherMobile"));
+  });
+
+  it("rejects an unknown interested course", async () => {
+    const res = await request(app).post("/api/applications").send({ ...VALID, interestedCourse: "PhD" });
+
+    assert.equal(res.status, 422);
+    assert.ok(res.body.errors.some((e) => e.field === "interestedCourse"));
   });
 
   it("rejects an invalid WhatsApp number", async () => {

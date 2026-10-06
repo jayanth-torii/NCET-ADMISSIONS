@@ -46,6 +46,8 @@ const APPLICANT = {
   studentName: "Anitha Sharma",
   studentMobile: "9876543210",
   studentWhatsApp: "9876500011",
+  course: "B.E. Computer Science & Engineering",
+  gender: "female",
   fatherName: "Ramesh Sharma",
   fatherMobile: "9123456780",
   interCollegeName: "Sri Chaitanya Junior College",
@@ -72,7 +74,7 @@ const check = (name, passed, detail = "") => {
 
   check("page loads", (await page.title()).includes("NGI Admissions"), await page.title());
 
-  // --- All ten form fields are present and labelled ---
+  // --- All eleven form fields are present and labelled ---
   // Addressed by input name rather than label text: marketing copy rewords
   // labels often, but the names are what the API contract depends on.
   const FIELDS = [
@@ -92,11 +94,25 @@ const check = (name, passed, detail = "") => {
     check(`field "${label}" exists`, count === 1, `${count} match(es)`);
   }
 
-  // Gender is a listbox rather than a native input, so assert its label.
+  // Gender and the course picker are listboxes rather than native inputs,
+  // so assert their labels.
   check(
     `field "Gender" exists`,
     (await page.getByLabel(/^Gender/).count()) === 1
   );
+  check(
+    `field "Interested course" exists`,
+    (await page.getByLabel(/^Interested course/).count()) === 1
+  );
+
+  // BE / UG / PG appear as group headings inside the same dropdown.
+  await page.getByLabel(/^Interested course/).click();
+  await page.getByText("BE", { exact: true }).first().waitFor({ timeout: 5000 });
+  check("BE group shown in dropdown", true);
+  check("UG group shown in dropdown", (await page.getByText("UG", { exact: true }).count()) >= 1);
+  check("PG group shown in dropdown", (await page.getByText("PG", { exact: true }).count()) >= 1);
+  await page.keyboard.press("Escape");
+  await page.waitForTimeout(200);
 
   // --- Empty submit is blocked client-side ---
   await page.getByRole("button", { name: /submit enquiry/i }).click();
@@ -121,6 +137,8 @@ const check = (name, passed, detail = "") => {
   await page.locator('[name="studentWhatsApp"]').fill(APPLICANT.studentWhatsApp);
   await page.getByLabel(/^Gender/).click();
   await page.getByRole("option", { name: "Female" }).click();
+  await page.getByLabel(/^Interested course/).click();
+  await page.getByRole("option", { name: APPLICANT.course }).click();
   await page.locator('[name="fatherName"]').fill(APPLICANT.fatherName);
   await page.locator('[name="fatherMobile"]').fill(APPLICANT.fatherMobile);
   await page.locator('[name="interCollegeName"]').fill(APPLICANT.interCollegeName);
@@ -149,6 +167,11 @@ const check = (name, passed, detail = "") => {
       "student WhatsApp stored",
       stored.studentWhatsApp === APPLICANT.studentWhatsApp,
       stored.studentWhatsApp
+    );
+    check(
+      "interested course stored",
+      stored.interestedCourse === APPLICANT.course,
+      stored.interestedCourse
     );
     check("father name stored", stored.fatherName === APPLICANT.fatherName, stored.fatherName);
     check(

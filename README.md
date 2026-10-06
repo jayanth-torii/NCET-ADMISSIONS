@@ -66,7 +66,7 @@ state under `prefers-reduced-motion`.
 
 **🛡️ Validated twice**
 
-The ten-field admission form is checked in the browser for instant feedback
+The eleven-field admission form is checked in the browser for instant feedback
 and again on the server, which is the authority. The client can never bypass it.
 Only whitelisted fields are persisted.
 
@@ -182,6 +182,7 @@ Field set exactly as agreed for the 2026 intake:
 | Student mobile | `studentMobile` | 10 digits, starts 6–9 |
 | Student WhatsApp number | `studentWhatsApp` | 10 digits, starts 6–9 |
 | Gender | `gender` | `male` / `female` / `other` |
+| Interested course | `interestedCourse` | one of the offered programmes (7 B.E. branches, BCA, BBA, B.Com, MCA, MBA) |
 | Father / guardian name | `fatherName` | 2–120 chars |
 | Father / guardian mobile | `fatherMobile` | 10 digits, starts 6–9 |
 | Inter college name | `interCollegeName` | 2–180 chars |
@@ -197,6 +198,7 @@ curl -X POST http://localhost:4005/api/applications \
     "studentMobile": "9876543210",
     "studentWhatsApp": "9876543211",
     "gender": "female",
+    "interestedCourse": "B.E. Computer Science & Engineering",
     "fatherName": "Ramesh Sharma",
     "fatherMobile": "9123456780",
     "interCollegeName": "Sri Chaitanya Junior College",
@@ -339,7 +341,7 @@ Configure in `api/.env`:
 
 | Variable | Purpose |
 |---|---|
-| `ADMIN_EMAIL` | The single allowed account |
+| `ADMIN_EMAILS` | Comma-separated admin accounts (default: jayanth.m@ncetmail.com, dr.bhargava@ncetmail.com) |
 | `ADMIN_PASSWORD_HASH` | bcrypt hash — never the plaintext |
 | `ADMIN_OTP` | Second factor |
 | `ADMIN_JWT_SECRET` | Signs both the challenge and the session |
@@ -451,7 +453,7 @@ fill in every `sync: false` variable it lists.
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` / `SMTP_FROM` | api | mail provider credentials |
 | `DIGEST_TRANSPORT` | api | `auto` |
 | `DASHBOARD_URL` | api | `https://<web>.onrender.com/` |
-| `ADMIN_EMAIL` | api | the one allowed developer account |
+| `ADMIN_EMAILS` | api | comma-separated developer accounts |
 | `ADMIN_PASSWORD_HASH` | api | bcrypt hash of the admin password |
 | `ADMIN_OTP` | api | the OTP second factor |
 | `ADMIN_JWT_SECRET` | api | long random string — `openssl rand -hex 32` |

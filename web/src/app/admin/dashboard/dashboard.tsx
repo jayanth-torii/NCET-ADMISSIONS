@@ -30,6 +30,7 @@ type Application = {
   studentMobile: string;
   studentWhatsApp: string;
   gender: string;
+  interestedCourse: string;
   fatherName: string;
   fatherMobile: string;
   interCollegeName: string;
@@ -137,7 +138,7 @@ export function Dashboard() {
     const q = search.trim().toLowerCase();
     if (!q) return rows;
     return rows.filter((r) =>
-      [r.studentName, r.appNumber, r.studentMobile, r.studentWhatsApp, r.interCollegeName, r.interCollegePlace]
+      [r.studentName, r.appNumber, r.studentMobile, r.studentWhatsApp, r.interestedCourse, r.interCollegeName, r.interCollegePlace]
         .join(" ")
         .toLowerCase()
         .includes(q)
@@ -171,7 +172,7 @@ export function Dashboard() {
 
   const exportCsv = () => {
     const headers = [
-      "Student Name", "Student Mobile", "Student WhatsApp", "Gender", "Father", "Father Mobile",
+      "Student Name", "Student Mobile", "Student WhatsApp", "Gender", "Interested Course", "Father", "Father Mobile",
       "Inter College", "Place", "App Number", "Home Town", "Status", "Submitted",
     ];
     const escape = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
@@ -180,7 +181,7 @@ export function Dashboard() {
       headers.join(","),
       ...filtered.map((r) =>
         [
-          r.studentName, r.studentMobile, r.studentWhatsApp, r.gender, r.fatherName, r.fatherMobile,
+          r.studentName, r.studentMobile, r.studentWhatsApp, r.gender, r.interestedCourse, r.fatherName, r.fatherMobile,
           r.interCollegeName, r.interCollegePlace, r.appNumber, r.homeTownAddress,
           r.status, new Date(r.createdAt).toISOString(),
         ].map(escape).join(",")
@@ -307,7 +308,7 @@ export function Dashboard() {
             <caption className="sr-only">Admission applications</caption>
             <thead>
               <tr className="border-b border-navy-100 bg-navy-50/60">
-                {["Student", "Contact", "Inter college", "App no.", "Home town", "Status", "Received"].map(
+                {["Student", "Course", "Contact", "Inter college", "App no.", "Home town", "Status", "Received"].map(
                   (h) => (
                     <th
                       key={h}
@@ -323,7 +324,7 @@ export function Dashboard() {
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">
+                  <td colSpan={8} className="px-4 py-12 text-center text-muted-foreground">
                     {loading ? "Loading…" : "No applications match this filter."}
                   </td>
                 </tr>
@@ -334,6 +335,7 @@ export function Dashboard() {
                       <p className="font-bold text-navy">{r.studentName}</p>
                       <p className="text-xs text-muted-foreground capitalize">{r.gender}</p>
                     </td>
+                    <td className="px-4 py-3 text-xs text-navy">{r.interestedCourse}</td>
                     <td className="px-4 py-3">
                       <a
                         href={`tel:+91${r.studentMobile}`}
