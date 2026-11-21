@@ -360,7 +360,9 @@ export function Dashboard() {
                       <p className="text-navy">{r.interCollegeName}</p>
                       <p className="text-xs text-muted-foreground">{r.interCollegePlace}</p>
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs">{r.appNumber}</td>
+                    <td className="px-4 py-3 font-mono text-xs">
+                      {r.appNumber || <span className="text-muted-foreground">—</span>}
+                    </td>
                     <td className="max-w-56 px-4 py-3 text-xs text-muted-foreground">
                       {r.homeTownAddress}
                     </td>

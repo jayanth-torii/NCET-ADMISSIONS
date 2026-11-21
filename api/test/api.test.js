@@ -138,6 +138,42 @@ describe("POST /api/applications", () => {
     assert.equal(res.status, 201);
     assert.ok(res.body.duplicateOf, "expected duplicateOf to be set on the second submission");
   });
+
+  it("accepts an application with no entrance exam number", async () => {
+    const res = await request(app)
+      .post("/api/applications")
+      .send({ ...VALID, studentMobile: "9000000001", appNumber: undefined });
+
+    assert.equal(res.status, 201);
+    assert.equal(res.body.application.appNumber, "");
+  });
+
+  it("accepts a blank entrance exam number", async () => {
+    const res = await request(app)
+      .post("/api/applications")
+      .send({ ...VALID, studentMobile: "9000000002", appNumber: "   " });
+
+    assert.equal(res.status, 201);
+    assert.equal(res.body.application.appNumber, "");
+  });
+
+  it("does not call two blank exam numbers a duplicate", async () => {
+    const res = await request(app)
+      .post("/api/applications")
+      .send({ ...VALID, studentMobile: "9000000003", appNumber: "" });
+
+    assert.equal(res.status, 201);
+    assert.equal(res.body.duplicateOf, null, "a blank exam number must not match another blank one");
+  });
+
+  it("still rejects an entrance exam number over 40 characters", async () => {
+    const res = await request(app)
+      .post("/api/applications")
+      .send({ ...VALID, appNumber: "K".repeat(41) });
+
+    assert.equal(res.status, 422);
+    assert.ok(res.body.errors.some((e) => e.field === "appNumber"));
+  });
 });
 
 describe("GET /api/applications", () => {

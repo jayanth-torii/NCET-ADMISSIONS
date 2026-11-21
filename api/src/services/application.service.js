@@ -33,9 +33,14 @@ const createApplication = async (body) => {
   // re-submitted after a correction, so this never blocks the insert.
   let duplicateOf = null;
   try {
+    // appNumber is optional, and a blank one matches every other blank one —
+    // so it only earns a clause when the student actually supplied it.
+    const matches = [{ studentMobile: application.studentMobile }];
+    if (application.appNumber) matches.push({ appNumber: application.appNumber });
+
     const prior = await Application.findOne({
       _id: { $ne: application._id },
-      $or: [{ appNumber: application.appNumber }, { studentMobile: application.studentMobile }],
+      $or: matches,
     }).select("_id createdAt");
 
     if (prior) duplicateOf = prior._id;

@@ -92,7 +92,7 @@ async function buildWorkbook(applications = [], meta = {}) {
       fatherMobile: app.fatherMobile,
       interCollegeName: app.interCollegeName,
       interCollegePlace: app.interCollegePlace,
-      appNumber: app.appNumber,
+      appNumber: app.appNumber || "",
       homeTownAddress: app.homeTownAddress,
       createdAt: fmtDate(app.createdAt),
       status: app.status || "new",

@@ -19,7 +19,7 @@ const mobile = (field) =>
 
 /**
  * Validation for the NGI Admissions application form.
- * Every field on the approved spec is required.
+ * Every field on the approved spec is required except appNumber.
  */
 const applicationRules = () => [
   trim("studentName").isLength({ min: 2, max: 120 }).withMessage("Student name looks too short"),
@@ -43,7 +43,12 @@ const applicationRules = () => [
   mobile("fatherMobile"),
   trim("interCollegeName").isLength({ min: 2, max: 180 }).withMessage("Inter college name is required"),
   trim("interCollegePlace").isLength({ min: 2, max: 120 }).withMessage("Inter college place is required"),
-  trim("appNumber").isLength({ max: 40 }).withMessage("Application number is too long"),
+  // Optional: students often enquire before they have an allotment number.
+  body("appNumber")
+    .optional({ values: "falsy" })
+    .trim()
+    .isLength({ max: 40 })
+    .withMessage("Application number is too long"),
   trim("homeTownAddress").isLength({ min: 5, max: 400 }).withMessage("Home town address is required"),
 ];
 

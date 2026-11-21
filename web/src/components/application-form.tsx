@@ -93,13 +93,16 @@ function validate(values: FormValues): FormErrors {
     errors.interCollegeName = "Enter your inter college / school name";
   if (values.interCollegePlace.trim().length < 2)
     errors.interCollegePlace = "Enter the town or city of your college";
-  if (!values.appNumber.trim())
-    errors.appNumber = "Enter your KCET / JEE / CET application number";
+  if (values.appNumber.trim().length > 40)
+    errors.appNumber = "Application number is too long";
   if (values.homeTownAddress.trim().length < 5)
     errors.homeTownAddress = "Enter your home town address";
 
   return errors;
 }
+
+/** Fields a student may leave blank. Everything else is required. */
+const OPTIONAL_FIELDS = new Set<keyof FormValues>(["appNumber"]);
 
 /** One shared control style, so every field reads as part of the same form. */
 const CONTROL =
@@ -110,6 +113,7 @@ function Field({
   label,
   error,
   hint,
+  optional = false,
   className = "",
   children,
 }: {
@@ -117,6 +121,8 @@ function Field({
   label: string;
   error?: string;
   hint?: string;
+  /** Renders an "Optional" tag in place of the required asterisk. */
+  optional?: boolean;
   className?: string;
   children: React.ReactNode;
 }) {
@@ -124,9 +130,13 @@ function Field({
     <div className={`space-y-1.5 ${className}`}>
       <Label htmlFor={id} className="text-sm font-semibold text-navy-800">
         {label}
-        <span aria-hidden="true" className="ml-0.5 text-ember-600">
-          *
-        </span>
+        {optional ? (
+          <span className="ml-1.5 text-xs font-medium text-muted-foreground">Optional</span>
+        ) : (
+          <span aria-hidden="true" className="ml-0.5 text-ember-600">
+            *
+          </span>
+        )}
       </Label>
       {children}
       {hint && !error && (
@@ -241,7 +251,7 @@ export function ApplicationForm() {
     id: key,
     name: key,
     value: values[key],
-    required: true,
+    required: !OPTIONAL_FIELDS.has(key),
     "aria-invalid": errors[key] ? true : undefined,
     "aria-describedby": errors[key] ? `${key}-error` : undefined,
   });
@@ -257,7 +267,7 @@ export function ApplicationForm() {
           Admission enquiry
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Eleven quick details and your counsellor will call you.
+          Ten quick details and your counsellor will call you.
         </p>
       </div>
 
@@ -410,7 +420,8 @@ export function ApplicationForm() {
             id="appNumber"
             label="Entrance exam / allotment number"
             error={errors.appNumber}
-            hint="KCET, JEE Main, COMEDK or CET application number"
+            optional
+            hint="KCET, JEE Main, COMEDK or CET number — leave blank if you do not have one yet"
           >
             <Input
               {...fieldProps("appNumber")}

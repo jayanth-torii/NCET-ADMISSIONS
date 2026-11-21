@@ -63,8 +63,10 @@ const ApplicationSchema = new mongoose.Schema(
     interCollegePlace: { type: String, required: true, trim: true, maxlength: 120 },
 
     // --- Entrance exam ---
-    // KCET / JEE Main / CET allotment number, whichever the student applied through.
-    appNumber: { type: String, required: true, trim: true, uppercase: true, maxlength: 40 },
+    // KCET / JEE Main / CET allotment number, whichever the student applied
+    // through. Optional: many students enquire before they have sat the exam or
+    // been allotted a number, and a blocked form loses that lead.
+    appNumber: { type: String, default: "", trim: true, uppercase: true, maxlength: 40 },
 
     // --- Address ---
     homeTownAddress: { type: String, required: true, trim: true, maxlength: 400 },

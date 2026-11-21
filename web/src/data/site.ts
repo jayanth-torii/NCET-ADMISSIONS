@@ -234,7 +234,7 @@ export const processSteps: ProcessStep[] = [
     step: "01",
     title: "Submit Enquiry",
     description:
-      "Fill the short application form with your inter-college details and exam number. It takes under two minutes.",
+      "Fill the short application form with your inter-college details. Your entrance exam number is optional. It takes under two minutes.",
   },
   {
     step: "02",
@@ -288,7 +288,7 @@ export const faqs: Faq[] = [
   {
     question: "How do I apply for admission?",
     answer:
-      "Fill the application form on this page with your inter-college details and entrance exam number. Our regional counsellor will call you within one working day to guide you through the remaining steps.",
+      "Fill the application form on this page with your inter-college details — the entrance exam number is optional, so you can apply before your result. Our regional counsellor will call you within one working day to guide you through the remaining steps.",
   },
   {
     question: "What are the minimum eligibility criteria?",
