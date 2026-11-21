@@ -47,7 +47,7 @@ export function LoginForm() {
       setEmail(payload.email);
       setStep("otp");
     } catch {
-      setError("Could not reach the API. Is the server running?");
+      setError("Could not reach the API. It may be asleep, or this site is not in its CORS allow-list.");
     } finally {
       setBusy(false);
     }
@@ -75,7 +75,7 @@ export function LoginForm() {
       router.push("/admin/dashboard");
       router.refresh();
     } catch {
-      setError("Could not reach the API. Is the server running?");
+      setError("Could not reach the API. It may be asleep, or this site is not in its CORS allow-list.");
     } finally {
       setBusy(false);
     }
